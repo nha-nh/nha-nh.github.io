@@ -16,7 +16,6 @@ import {
   NScrollbar,
   NSpace,
   NTooltip,
-  NResult,
 } from "naive-ui";
 import {
   _Browser_CopyToClipboard,
@@ -44,7 +43,7 @@ const cardRef = ref();
 const componentRef = ref<{ myCanvas: _Canvas }>();
 watch(
   () => Settings.value.theme,
-  (theme) => componentRef.value?.myCanvas.setTheme(theme)
+  (theme) => componentRef.value?.myCanvas.setTheme(theme),
 );
 
 /** 当前状态是否是全屏 */
@@ -56,7 +55,7 @@ onMounted(() => {
   toggleFullScreen.value = _Element_Fullscreen(cardRef.value.$el);
   cleanup = _Element_FullscreenObserver(
     (isFull) => (isFullScreen.value = isFull),
-    cardRef.value.$el
+    cardRef.value.$el,
   );
 });
 onBeforeUnmount(() => {

@@ -6,6 +6,7 @@ import { markRaw, onMounted, onUnmounted, ref, watch } from "vue";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
 import { NRadio, NRadioGroup, NSpace } from "naive-ui";
+import { Settings } from "@/components/popups/components/Settings";
 
 const id = _Utility_GenerateUUID();
 let play = true;
@@ -13,7 +14,7 @@ let play = true;
 const percentage = ref(0);
 
 const animations = ref<{ [key: string]: Map<string, THREE.AnimationAction> }>(
-  {}
+  {},
 );
 const activeAnimations = ref<string>();
 watch(activeAnimations, (name, oldName) => {
@@ -126,7 +127,7 @@ function main() {
 
           animations.value[key as string].set(
             model.url,
-            markRaw(mixer.clipAction(firstClip))
+            markRaw(mixer.clipAction(firstClip)),
           );
         }
       }
@@ -169,6 +170,15 @@ function main() {
   }
 
   requestAnimationFrame(render);
+
+  watch(
+    () => Settings.value.theme,
+    (theme) => {
+      scene.background = new THREE.Color(theme == "light" ? "white" : "black");
+      renderer.render(scene, camera);
+    },
+    { immediate: true },
+  );
 }
 
 onMounted(() => {

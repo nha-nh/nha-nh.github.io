@@ -5,6 +5,7 @@ import { computed, defineAsyncComponent, ref } from "vue";
 import Progress from "./Progress.vue";
 
 const demos = [
+  { name: "3D 饼图", path: "3DPie" },
   { name: "迷你城市", path: "MiniCity", defaultPercentage: false },
   { name: "人口分布", path: "Population", defaultPercentage: 0 },
   { name: "离屏渲染", path: "Offscreen" },
@@ -32,7 +33,10 @@ const updateRef = (el: any, config: (typeof demos)[number]) => {
   <NTabs v-model:value="threejs">
     <NTabPane v-for="item in demos" :name="item.name">
       <Progress :percentage="percentage">
-        <component :ref="(el:any)=> updateRef(el,item)" :is="item.component" />
+        <component
+          :ref="(el: any) => updateRef(el, item)"
+          :is="item.component"
+        />
       </Progress>
     </NTabPane>
   </NTabs>

@@ -121,7 +121,7 @@ function main() {
           ];
         })
         .flat(),
-      true
+      true,
     );
     {
       const points = curve.getPoints(250);
