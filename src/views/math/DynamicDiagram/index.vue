@@ -35,7 +35,7 @@ const dynamicDiagramComponent = computed(() => {
     const waitComponent = () =>
       _Utility_WaitForCondition(
         () => !!document.querySelector(".dynamic-diagram-container"),
-        1000
+        1000,
       )
         .then(component)
         .catch(() => {
@@ -60,10 +60,6 @@ const transitionAnimations = [
     label: "弹跳",
   },
   {
-    value: "flip",
-    label: "3D翻转",
-  },
-  {
     value: "slide-fade",
     label: "滑动淡入",
   },
@@ -74,7 +70,7 @@ const transitionAnimations = [
 ];
 const activeTransition = useLocalStorage(
   "math-dynamic-diagram-transition",
-  "slide-fade"
+  "slide-fade",
 );
 </script>
 
