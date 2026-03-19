@@ -1,7 +1,7 @@
 import {
   _Animate_CreateOscillator,
   _Animate_NumericTransition,
-  _Canvas,
+  _Canvas_Axis,
   _Math_CalculateDistance2D,
   _Utility_GenerateUUID,
 } from "nhanh-pure-function";
@@ -17,44 +17,44 @@ const text_config = (text: string, x: number, y: number) => ({
   style: { size: 20 },
   isInteractive: false,
 });
-const a_text = new _Canvas.Text({
+const a_text = new _Canvas_Axis.Text({
   value: [0, 2],
   ...text_config("A", 0, -20),
 });
-const b_text = new _Canvas.Text({
+const b_text = new _Canvas_Axis.Text({
   value: [-3, -2],
   ...text_config("B", -15, 15),
 });
-const c_text = new _Canvas.Text({
+const c_text = new _Canvas_Axis.Text({
   value: [2, -2],
   ...text_config("C", 15, 15),
 });
-const d_text = new _Canvas.Text({
+const d_text = new _Canvas_Axis.Text({
   value: ABC.getMid(a_text, b_text),
   ...text_config("D", -15, -15),
 });
-const e_text = new _Canvas.Text({
+const e_text = new _Canvas_Axis.Text({
   value: ABC.getMid(a_text, c_text),
   ...text_config("E", 15, -15),
 });
-const f_text = new _Canvas.Text({
+const f_text = new _Canvas_Axis.Text({
   value: [
     c_text.value![0] - e_text.value![0] + d_text.value![0],
     b_text.value![1],
   ],
   ...text_config("F", 0, 15),
 });
-const g_text = new _Canvas.Text({
+const g_text = new _Canvas_Axis.Text({
   value: b_text.value,
   ...text_config("G", 0, 15),
 });
 const texts = [a_text, b_text, c_text, d_text, e_text, f_text, g_text];
 
-const t = new _Canvas.Polygon({
+const t = new _Canvas_Axis.Polygon({
   value: ABC.join(a_text, b_text, c_text),
   isInteractive: false,
 });
-const t_d = new _Canvas.Polygon({
+const t_d = new _Canvas_Axis.Polygon({
   value: ABC.join(d_text, e_text, g_text),
   isInteractive: false,
   style: { fill: "#C73A64" + 80, stroke: { color: "transparent" } },
@@ -65,26 +65,26 @@ const line_config = (color: string, dash = false, width = 4) => ({
   isInteractive: false,
   style: { stroke: { color, dash, width } },
 });
-const l_de = new _Canvas.Line({
+const l_de = new _Canvas_Axis.Line({
   isInteractive: false,
   style: { stroke: { dash: true, width: 2 } },
 });
-const l_eb = new _Canvas.Line({
+const l_eb = new _Canvas_Axis.Line({
   value: ABC.join(e_text, b_text),
   ...line_config("#C73A64", true, 2),
 });
-const l_dc = new _Canvas.Line({
+const l_dc = new _Canvas_Axis.Line({
   value: ABC.join(d_text, c_text),
   ...line_config("#C73A64", true, 2),
 });
-const l_df = new _Canvas.Line({
+const l_df = new _Canvas_Axis.Line({
   value: ABC.join(d_text, f_text),
   ...line_config("#C73A64", true, 2),
 });
-const l_bd = new _Canvas.Line({
+const l_bd = new _Canvas_Axis.Line({
   ...line_config("#C73A64", true, 2),
 });
-const l_ce = new _Canvas.Line({
+const l_ce = new _Canvas_Axis.Line({
   ...line_config("#C73A64", true, 2),
 });
 const lines = [l_de, l_eb, l_dc, l_df, l_bd, l_ce];
@@ -103,7 +103,7 @@ const X = {
     const x = MyMath.calculateXFromY(
       MyMath.inverseTransform(a_text.value!),
       MyMath.inverseTransform(b_text.value!),
-      y
+      y,
     );
     return (X.abv[y] = x);
   },
@@ -114,7 +114,7 @@ const X = {
     const x = MyMath.calculateXFromY(
       MyMath.inverseTransform(a_text.value!),
       MyMath.inverseTransform(c_text.value!),
-      y
+      y,
     );
     return (X.acv[y] = x);
   },
@@ -215,7 +215,7 @@ const oscillator = _Animate_CreateOscillator(
     percentage = v;
     Update();
   },
-  4
+  4,
 );
 
 Media.value.fpsCallback((fps) => {

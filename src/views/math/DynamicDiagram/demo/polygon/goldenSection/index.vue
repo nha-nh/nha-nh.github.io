@@ -3,17 +3,17 @@ import { onMounted, shallowRef } from "vue";
 import { Settings } from "@/components/popups/components/Settings";
 import { overlays, id, GOLDEN_RATIO } from ".";
 import Card from "@/views/math/DynamicDiagram/components/Card.vue";
-import { _Canvas } from "nhanh-pure-function";
+import { _Canvas_Axis } from "nhanh-pure-function";
 import { NEquation } from "naive-ui";
 
-let myCanvas = shallowRef<_Canvas>();
+let myCanvas = shallowRef<_Canvas_Axis>();
 
 const equation = `\\begin{aligned}
    &\\frac{AP}{AB} = \\frac{PB}{AP} \\approx ${GOLDEN_RATIO};
   \\end{aligned}`;
 
 onMounted(() => {
-  myCanvas.value = new _Canvas({
+  myCanvas.value = new _Canvas_Axis({
     id,
     theme: Settings.value.theme,
     axisShow: false,

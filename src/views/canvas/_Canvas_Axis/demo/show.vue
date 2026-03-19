@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { _Utility_GenerateUUID, _Canvas } from "nhanh-pure-function";
+import { _Utility_GenerateUUID, _Canvas_Axis } from "nhanh-pure-function";
 import { onMounted, ref, shallowRef, watch } from "vue";
 import { Settings } from "@/components/popups/components/Settings";
 import { NSpace, NSwitch, NText } from "naive-ui";
 
 const id = _Utility_GenerateUUID();
 
-let myCanvas = shallowRef<_Canvas>();
+let myCanvas = shallowRef<_Canvas_Axis>();
 const scale = ref();
-const point_value = new _Canvas.Point({
+const point_value = new _Canvas_Axis.Point({
   value: [0, 0],
   scaleRange: [0.8, 1.2],
 });
@@ -17,7 +17,7 @@ const show = ref(true);
 watch(show, (show) => (point_value.isVisible = show), { immediate: true });
 
 onMounted(() => {
-  myCanvas.value = new _Canvas({ id, theme: Settings.value.theme });
+  myCanvas.value = new _Canvas_Axis({ id, theme: Settings.value.theme });
   myCanvas.value.setNotifyReload(() => {
     scale.value = myCanvas.value!.scale;
   });

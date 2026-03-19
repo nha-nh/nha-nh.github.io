@@ -1,4 +1,4 @@
-import type { _Canvas } from "nhanh-pure-function";
+import type { _Canvas_Axis } from "nhanh-pure-function";
 
 export const color = [
   "#91cc75",
@@ -84,7 +84,7 @@ const FUNCTION_MAP: Record<
 };
 
 export default function draw(
-  canvas: _Canvas,
+  canvas: _Canvas_Axis,
   ctx: CanvasRenderingContext2D,
   functions: FunctionName[],
 ) {

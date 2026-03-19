@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {
   _Utility_GenerateUUID,
-  _Canvas,
+  _Canvas_Axis,
   type Overlay,
 } from "nhanh-pure-function";
 import {
@@ -16,7 +16,7 @@ import { ref } from "vue";
 type Value = [number, number] | [number, number][];
 
 interface Props {
-  canvas?: _Canvas;
+  canvas?: _Canvas_Axis;
   overlays: Overlay<any, Value>[];
 }
 const props = defineProps<Props>();
@@ -52,7 +52,7 @@ function UpdateAxis() {
   });
 }
 const isHandlePointsVisible = props.overlays.some(
-  (overlay) => "isHandlePointsVisible" in overlay
+  (overlay) => "isHandlePointsVisible" in overlay,
 );
 function UpdateIsShowHandlePoint(isShowHandlePoint: boolean) {
   props.overlays.forEach((overlay) => {

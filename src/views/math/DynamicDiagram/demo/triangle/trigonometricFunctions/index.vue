@@ -2,23 +2,23 @@
 import { onMounted, ref, shallowRef, watch } from "vue";
 import { Settings } from "@/components/popups/components/Settings";
 import Card from "@/views/math/DynamicDiagram/components/Card.vue";
-import { _Canvas, _Utility_GenerateUUID } from "nhanh-pure-function";
+import { _Canvas_Axis, _Utility_GenerateUUID } from "nhanh-pure-function";
 import draw, { FUNCTIONS, type FunctionName } from ".";
 import { NSpace, NText, NCheckboxGroup, NCheckbox } from "naive-ui";
 import UnitCircle from "./unitCircle.vue";
 import Media from "@/stores/media";
 
 const id = _Utility_GenerateUUID();
-let canvas = shallowRef<_Canvas>();
+let canvas = shallowRef<_Canvas_Axis>();
 
 const functions = ref<FunctionName[]>([...FUNCTIONS]);
-const custom = new _Canvas.Custom({
+const custom = new _Canvas_Axis.Custom({
   draw: (ctx) => draw(canvas.value!, ctx, functions.value),
 });
 
 watch(functions, () => custom.notifyReload?.());
 onMounted(() => {
-  canvas.value = new _Canvas({
+  canvas.value = new _Canvas_Axis({
     id,
     theme: Settings.value.theme,
     axisConfig: { count: 4 },

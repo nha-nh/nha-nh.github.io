@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {
   _Animate_CreateOscillator,
-  _Canvas,
+  _Canvas_Axis,
   _Utility_GenerateUUID,
 } from "nhanh-pure-function";
 import { onMounted, ref, shallowRef } from "vue";
@@ -12,7 +12,7 @@ import Media from "@/stores/media";
 
 const id = _Utility_GenerateUUID();
 
-let myCanvas = shallowRef<_Canvas>();
+let myCanvas = shallowRef<_Canvas_Axis>();
 
 const isMobileStyle = Media.value.isMobileStyle;
 const totalLen = 120;
@@ -35,44 +35,44 @@ const text_config = (x: number, y: number, color?: string) => {
   return config;
 };
 
-const curve = new _Canvas.Line({
+const curve = new _Canvas_Axis.Line({
   value: Array.from({ length: 101 }, (_, i) => [
     i,
     Number(((i * (totalLen - i)) / 2 / 50).toFixed(1)) + 60,
   ]),
   isInteractive: false,
 });
-const curve_point = new _Canvas.Point({
+const curve_point = new _Canvas_Axis.Point({
   value: [0, 0],
 });
-const m_text = new _Canvas.Text({
+const m_text = new _Canvas_Axis.Text({
   text: "面积 : 0㎡",
   ...text_config(120, -40, "#d03050"),
 });
 
-const rect = new _Canvas.Polygon({
+const rect = new _Canvas_Axis.Polygon({
   value: [
     [0, 0],
     [0, 0],
   ],
   isRect: true,
 });
-const line = new _Canvas.Line({
+const line = new _Canvas_Axis.Line({
   value: [
     [0, 0],
     [100, 0],
   ],
 });
-const q_text = new _Canvas.Text({
+const q_text = new _Canvas_Axis.Text({
   text: "用 120m 围栏，靠 100m 长的墙围一个长方形",
   value: [50, 0],
   ...text_config(0, 20),
 });
-const x_text = new _Canvas.Text({
+const x_text = new _Canvas_Axis.Text({
   text: "x : 0m",
   ...text_config(0, -20, "#18a058"),
 });
-const y_text = new _Canvas.Text({
+const y_text = new _Canvas_Axis.Text({
   text: "y : 0m",
   ...text_config(70, 0, "#18a058"),
 });
@@ -100,7 +100,7 @@ onMounted(() => {
   const { width, height } = document
     .getElementById(id)!
     .getBoundingClientRect();
-  myCanvas.value = new _Canvas({
+  myCanvas.value = new _Canvas_Axis({
     id,
     theme: Settings.value.theme,
     axisConfig: { y: -1, count: 20 },

@@ -4,13 +4,13 @@ import { Settings } from "@/components/popups/components/Settings";
 import { NCard, NAlert, NButton, NSpace } from "naive-ui";
 import Media from "@/stores/media";
 import SvgGather from "@/assets/icon/gather";
-import type { _Canvas } from "nhanh-pure-function";
+import type { _Canvas_Axis } from "nhanh-pure-function";
 
 interface Props {
   /** 是否垂直 */
   vertical?: boolean;
   /** 画布实例 */
-  canvas?: _Canvas;
+  canvas?: _Canvas_Axis;
   /** 提示信息 */
   alert?: string;
   /** 提示内容 */
@@ -28,7 +28,7 @@ watch(
   () => Settings.value.theme,
   (theme) => {
     props.canvas?.setTheme(theme);
-  }
+  },
 );
 </script>
 

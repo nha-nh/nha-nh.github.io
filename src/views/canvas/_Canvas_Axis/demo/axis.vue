@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { _Utility_GenerateUUID, _Canvas } from "nhanh-pure-function";
+import { _Utility_GenerateUUID, _Canvas_Axis } from "nhanh-pure-function";
 import { onMounted, ref, shallowRef, watch } from "vue";
 import { Settings } from "@/components/popups/components/Settings";
 import {
@@ -33,7 +33,7 @@ const show = ref<string[]>([
   "axis",
   "axisText",
 ]);
-const config = ref<_Canvas["axisConfig"]>({
+const config = ref<_Canvas_Axis["axisConfig"]>({
   x: 1 as 1 | -1,
   y: 1 as 1 | -1,
   count: 2,
@@ -41,7 +41,7 @@ const config = ref<_Canvas["axisConfig"]>({
   size: 100,
 });
 
-let myCanvas = shallowRef<_Canvas>();
+let myCanvas = shallowRef<_Canvas_Axis>();
 
 watch(
   () => [show.value, config.value] as const,
@@ -67,10 +67,10 @@ watch(
       axisText: show.includes("axisText"),
     });
   },
-  { deep: true }
+  { deep: true },
 );
 onMounted(() => {
-  myCanvas.value = new _Canvas({ id, theme: Settings.value.theme });
+  myCanvas.value = new _Canvas_Axis({ id, theme: Settings.value.theme });
 });
 defineExpose({ myCanvas });
 </script>

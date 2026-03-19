@@ -50,8 +50,8 @@ const canvas: CustomRouteRecord = {
   },
   children: [
     {
-      path: "_Canvas",
-      name: "_Canvas",
+      path: "_Canvas_Axis",
+      name: "_Canvas_Axis",
       meta: {
         name: {
           zhCN: "Canvas 工具",
@@ -62,7 +62,7 @@ const canvas: CustomRouteRecord = {
           enUS: "Canvas tools hub with drawing, interaction and rendering demos.",
         },
       },
-      component: () => import("@/views/canvas/_Canvas/index.vue"),
+      component: () => import("@/views/canvas/_Canvas_Axis/index.vue"),
     },
     {
       path: "YOLOFormatAnnotator",

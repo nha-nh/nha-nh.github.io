@@ -12,7 +12,6 @@ import { configProviderPropsRef } from "./utils/windows";
 import { computed } from "vue";
 import katex from "katex";
 import "katex/dist/katex.css";
-
 import { _Utility_WaitForCondition } from "nhanh-pure-function";
 
 const NSpinApi = computed(() => {

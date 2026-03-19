@@ -1,4 +1,4 @@
-import { _Canvas } from "nhanh-pure-function";
+import { _Canvas_Axis } from "nhanh-pure-function";
 import { _Utility_GenerateUUID } from "nhanh-pure-function";
 import {
   ABC,
@@ -10,7 +10,7 @@ import { ref } from "vue";
 
 export const id = _Utility_GenerateUUID();
 
-const m = new _Canvas.Polygon({
+const m = new _Canvas_Axis.Polygon({
   value: [
     [0, -1.464],
     [-2, 2],
@@ -29,24 +29,24 @@ const config = (color: string, dash?: boolean) => ({
     stroke: { color, width: 2, dash },
   },
 });
-const abl = new _Canvas.Line(config("#8a2be2"));
-const ablp = new _Canvas.Line(config("#8a2be2", true));
-const ablra = new _Canvas.Line(config("#8a2be2"));
+const abl = new _Canvas_Axis.Line(config("#8a2be2"));
+const ablp = new _Canvas_Axis.Line(config("#8a2be2", true));
+const ablra = new _Canvas_Axis.Line(config("#8a2be2"));
 
-const bcl = new _Canvas.Line(config("#ff69b4"));
-const bclp = new _Canvas.Line(config("#ff69b4", true));
-const bclra = new _Canvas.Line(config("#ff69b4"));
+const bcl = new _Canvas_Axis.Line(config("#ff69b4"));
+const bclp = new _Canvas_Axis.Line(config("#ff69b4", true));
+const bclra = new _Canvas_Axis.Line(config("#ff69b4"));
 
-const cal = new _Canvas.Line(config("#3bc0cd"));
-const calp = new _Canvas.Line(config("#3bc0cd", true));
-const calra = new _Canvas.Line(config("#3bc0cd"));
+const cal = new _Canvas_Axis.Line(config("#3bc0cd"));
+const calp = new _Canvas_Axis.Line(config("#3bc0cd", true));
+const calra = new _Canvas_Axis.Line(config("#3bc0cd"));
 
-const y = new _Canvas.Arc({
+const y = new _Canvas_Axis.Arc({
   startAngle: 0,
   endAngle: 360,
   isInteractive: false,
 });
-const yd = new _Canvas.Point({});
+const yd = new _Canvas_Axis.Point({});
 export const showCircumcircle = ref(true);
 
 export const overlays = [
@@ -88,7 +88,7 @@ export function Update() {
       a,
       b,
       { min: min.xV, max: max.xV },
-      { min: min.yV, max: max.yV }
+      { min: min.yV, max: max.yV },
     );
     if (point) {
       const { x, y } = point;
@@ -108,13 +108,13 @@ export function Update() {
   cal.value = MyMath.transform([abc.c, abc.a]);
 
   ablra.value = MyMath.transform(
-    MyMath.getPerpendicularBisectorRightAngleSymbol(abc.a, abc.b, abc.c) || []
+    MyMath.getPerpendicularBisectorRightAngleSymbol(abc.a, abc.b, abc.c) || [],
   );
   bclra.value = MyMath.transform(
-    MyMath.getPerpendicularBisectorRightAngleSymbol(abc.b, abc.c, abc.a) || []
+    MyMath.getPerpendicularBisectorRightAngleSymbol(abc.b, abc.c, abc.a) || [],
   );
   calra.value = MyMath.transform(
-    MyMath.getPerpendicularBisectorRightAngleSymbol(abc.c, abc.a, abc.b) || []
+    MyMath.getPerpendicularBisectorRightAngleSymbol(abc.c, abc.a, abc.b) || [],
   );
 
   if (y.isVisible !== showCircumcircle.value) {

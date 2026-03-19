@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { _Utility_GenerateUUID, _Canvas } from "nhanh-pure-function";
+import { _Utility_GenerateUUID, _Canvas_Axis } from "nhanh-pure-function";
 import { onMounted, shallowRef, watch } from "vue";
 import { Settings } from "@/components/popups/components/Settings";
 
 const id = _Utility_GenerateUUID();
 
-let myCanvas = shallowRef<_Canvas>();
-const overlay = new _Canvas.Custom<any>({
+let myCanvas = shallowRef<_Canvas_Axis>();
+const overlay = new _Canvas_Axis.Custom<any>({
   value: [
     [0, 0],
     [-1, -1],
@@ -98,7 +98,7 @@ const overlay = new _Canvas.Custom<any>({
 });
 
 onMounted(() => {
-  myCanvas.value = new _Canvas({ id, theme: Settings.value.theme });
+  myCanvas.value = new _Canvas_Axis({ id, theme: Settings.value.theme });
   myCanvas.value.addOverlay(overlay);
 });
 defineExpose({ myCanvas });

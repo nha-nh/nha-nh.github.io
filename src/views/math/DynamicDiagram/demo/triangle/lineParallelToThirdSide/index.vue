@@ -5,12 +5,12 @@ import { overlays, id, Update, Transform, Y } from ".";
 import Card from "@/views/math/DynamicDiagram/components/Card.vue";
 import { NText, NP, NBlockquote } from "naive-ui";
 import Oscillator from "@/views/math/DynamicDiagram/components/Oscillator.vue";
-import { _Canvas } from "nhanh-pure-function";
+import { _Canvas_Axis } from "nhanh-pure-function";
 
-let myCanvas = shallowRef<_Canvas>();
+let myCanvas = shallowRef<_Canvas_Axis>();
 
 onMounted(() => {
-  myCanvas.value = new _Canvas({
+  myCanvas.value = new _Canvas_Axis({
     id,
     theme: Settings.value.theme,
     axisShow: false,

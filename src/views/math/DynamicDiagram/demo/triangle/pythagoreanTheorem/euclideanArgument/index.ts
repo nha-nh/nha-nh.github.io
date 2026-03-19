@@ -1,4 +1,4 @@
-import { _Canvas } from "nhanh-pure-function";
+import { _Canvas_Axis } from "nhanh-pure-function";
 import {
   _Animate_NumericTransition,
   _Math_CalculateDistance2D,
@@ -12,7 +12,7 @@ export const id = _Utility_GenerateUUID();
 export const J_ABC = ref(45);
 const BC = 5;
 
-const t = new _Canvas.Polygon({
+const t = new _Canvas_Axis.Polygon({
   value: [
     [0, 0],
     [-BC / 2, 0],
@@ -20,7 +20,7 @@ const t = new _Canvas.Polygon({
   ],
   isInteractive: false,
 });
-const tra = new _Canvas.Line({
+const tra = new _Canvas_Axis.Line({
   isInteractive: false,
   style: { stroke: { color: "#18a058" } },
 });
@@ -36,13 +36,13 @@ const polygon_config = (color?: string, rect?: boolean) => ({
   isRect: rect,
   isInteractive: false,
 });
-const ab_polygon = new _Canvas.Polygon(polygon_config("#8a2be2"));
-const ac_polygon = new _Canvas.Polygon(polygon_config("#ff69b4"));
+const ab_polygon = new _Canvas_Axis.Polygon(polygon_config("#8a2be2"));
+const ac_polygon = new _Canvas_Axis.Polygon(polygon_config("#ff69b4"));
 
-const bc_polygon_ab = new _Canvas.Polygon(polygon_config("#8a2be2", true));
-const bc_polygon_ac = new _Canvas.Polygon(polygon_config("#ff69b4", true));
+const bc_polygon_ab = new _Canvas_Axis.Polygon(polygon_config("#8a2be2", true));
+const bc_polygon_ac = new _Canvas_Axis.Polygon(polygon_config("#ff69b4", true));
 
-const ahb_polygon = new _Canvas.Polygon({
+const ahb_polygon = new _Canvas_Axis.Polygon({
   ...polygon_config("#ff0033"),
   isVisible: false,
 });
@@ -63,29 +63,29 @@ const text_config = (text: string, x = 0, y = 0) => ({
   style: { size: 20 },
   isInteractive: false,
 });
-const a_text = new _Canvas.Text(text_config("A", 0, -15));
-const b_text = new _Canvas.Text({
+const a_text = new _Canvas_Axis.Text(text_config("A", 0, -15));
+const b_text = new _Canvas_Axis.Text({
   value: [-BC / 2, 0],
   ...text_config("B", -10, 15),
 });
-const c_text = new _Canvas.Text({
+const c_text = new _Canvas_Axis.Text({
   ...text_config("C", 10, 15),
   value: [BC / 2, 0],
 });
-const d_text = new _Canvas.Text({
+const d_text = new _Canvas_Axis.Text({
   ...text_config("D", -10, 15),
   value: [-BC / 2, BC],
 });
-const e_text = new _Canvas.Text({
+const e_text = new _Canvas_Axis.Text({
   ...text_config("E", 10, 15),
   value: [BC / 2, BC],
 });
-const f_text = new _Canvas.Text(text_config("F", 10, 15));
-const g_text = new _Canvas.Text(text_config("G", 10, 15));
-const h_text = new _Canvas.Text(text_config("H", -10, 15));
-const i_text = new _Canvas.Text(text_config("I", -10, -15));
-const j_text = new _Canvas.Text(text_config("J", 10, 15));
-const k_text = new _Canvas.Text(text_config("K", 10, -15));
+const f_text = new _Canvas_Axis.Text(text_config("F", 10, 15));
+const g_text = new _Canvas_Axis.Text(text_config("G", 10, 15));
+const h_text = new _Canvas_Axis.Text(text_config("H", -10, 15));
+const i_text = new _Canvas_Axis.Text(text_config("I", -10, -15));
+const j_text = new _Canvas_Axis.Text(text_config("J", 10, 15));
+const k_text = new _Canvas_Axis.Text(text_config("K", 10, -15));
 
 const text = [
   a_text,
@@ -105,11 +105,11 @@ const line_config = () => ({
   isInteractive: false,
   style: { stroke: { dash: true } },
 });
-const ah_line = new _Canvas.Line(line_config());
-const ad_line = new _Canvas.Line(line_config());
-const ag_line = new _Canvas.Line(line_config());
-const bg_line = new _Canvas.Line(line_config());
-const hc_line = new _Canvas.Line(line_config());
+const ah_line = new _Canvas_Axis.Line(line_config());
+const ad_line = new _Canvas_Axis.Line(line_config());
+const ag_line = new _Canvas_Axis.Line(line_config());
+const bg_line = new _Canvas_Axis.Line(line_config());
+const hc_line = new _Canvas_Axis.Line(line_config());
 const line = [ah_line, ad_line, ag_line, bg_line, hc_line];
 
 export const overlays = [text, line, polygon];

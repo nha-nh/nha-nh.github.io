@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { _Utility_GenerateUUID, _Canvas } from "nhanh-pure-function";
+import { _Utility_GenerateUUID, _Canvas_Axis } from "nhanh-pure-function";
 import { onMounted, shallowRef } from "vue";
 import { Settings } from "@/components/popups/components/Settings";
 import UpdateData from "../updateData.vue";
 
 const id = _Utility_GenerateUUID();
 
-let myCanvas = shallowRef<_Canvas>();
-const arc_value = new _Canvas.Arc({
+let myCanvas = shallowRef<_Canvas_Axis>();
+const arc_value = new _Canvas_Axis.Arc({
   value: [-5, 0],
   radiusValue: 2,
   startAngle: 0.5,
   endAngle: Math.PI - 0.5,
   isDraggable: true,
 });
-const arc_value_counterclockwise = new _Canvas.Arc({
+const arc_value_counterclockwise = new _Canvas_Axis.Arc({
   value: [0, 0],
   radiusValue: 2,
   startAngle: 0.5,
@@ -22,7 +22,7 @@ const arc_value_counterclockwise = new _Canvas.Arc({
   isDraggable: true,
   counterclockwise: true,
 });
-const arc_position = new _Canvas.Arc({
+const arc_position = new _Canvas_Axis.Arc({
   position: [250, 0],
   radiusPosition: 100,
   startAngle: -0.5,
@@ -35,7 +35,7 @@ const arc_position = new _Canvas.Arc({
 const arc_arr = [arc_value, arc_value_counterclockwise, arc_position];
 
 onMounted(() => {
-  myCanvas.value = new _Canvas({ id, theme: Settings.value.theme });
+  myCanvas.value = new _Canvas_Axis({ id, theme: Settings.value.theme });
   myCanvas.value.addOverlay(arc_arr);
 });
 defineExpose({ myCanvas });

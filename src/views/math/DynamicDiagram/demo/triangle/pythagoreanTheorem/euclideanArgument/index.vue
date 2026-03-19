@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { _Canvas } from "nhanh-pure-function";
+import { _Canvas_Axis } from "nhanh-pure-function";
 import { onMounted, shallowRef } from "vue";
 import { Settings } from "@/components/popups/components/Settings";
 import { overlays, id, Update, J_ABC, isPlay, Tips } from ".";
@@ -9,10 +9,10 @@ import { NButton } from "naive-ui";
 import SvgGather from "@/assets/icon/gather";
 import Media from "@/stores/media";
 
-let myCanvas = shallowRef<_Canvas>();
+let myCanvas = shallowRef<_Canvas_Axis>();
 
 onMounted(() => {
-  myCanvas.value = new _Canvas({
+  myCanvas.value = new _Canvas_Axis({
     id,
     theme: Settings.value.theme,
     axisShow: false,

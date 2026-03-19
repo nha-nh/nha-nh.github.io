@@ -3,10 +3,10 @@ import { onMounted, shallowRef, watch } from "vue";
 import { Settings } from "@/components/popups/components/Settings";
 import { overlays, id, Update, Transform, t } from ".";
 import Card from "@/views/math/DynamicDiagram/components/Card.vue";
-import { _Canvas } from "nhanh-pure-function";
+import { _Canvas_Axis } from "nhanh-pure-function";
 import { NEquation } from "naive-ui";
 
-let myCanvas = shallowRef<_Canvas>();
+let myCanvas = shallowRef<_Canvas_Axis>();
 
 watch(
   () => Settings.value.theme,
@@ -22,7 +22,7 @@ watch(
   },
   {
     immediate: true,
-  }
+  },
 );
 
 const equation = `\\begin{aligned}
@@ -35,14 +35,14 @@ const equation = `\\begin{aligned}
   &\\therefore DE = \\frac{BC}{2};
   \\end{aligned}`;
 onMounted(() => {
-    myCanvas.value = new _Canvas({
-      id,
-      theme: Settings.value.theme,
-      axisShow: false,
-    });
+  myCanvas.value = new _Canvas_Axis({
+    id,
+    theme: Settings.value.theme,
+    axisShow: false,
+  });
 
-    myCanvas.value.addOverlay(overlays);
-    Update();
+  myCanvas.value.addOverlay(overlays);
+  Update();
 });
 </script>
 

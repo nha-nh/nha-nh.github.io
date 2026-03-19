@@ -23,7 +23,7 @@ import {
   _Element_FullscreenObserver,
   _Element_IsFullscreen,
   _Tip,
-  _Canvas,
+  _Canvas_Axis,
   _Utility_WaitForCondition,
 } from "nhanh-pure-function";
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
@@ -40,7 +40,7 @@ const props = defineProps<Props>();
 const showCode = ref(false);
 
 const cardRef = ref();
-const componentRef = ref<{ myCanvas: _Canvas }>();
+const componentRef = ref<{ myCanvas: _Canvas_Axis }>();
 watch(
   () => Settings.value.theme,
   (theme) => componentRef.value?.myCanvas.setTheme(theme),
@@ -93,7 +93,7 @@ onBeforeUnmount(() => {
             <NButton
               tag="a"
               :href="
-                'https://github.com/nha-nh/nha-nh.github.io/tree/main/src/views/canvas/_Canvas/demo/' +
+                'https://github.com/nha-nh/nha-nh.github.io/tree/main/src/views/canvas/_Canvas_Axis/demo/' +
                 path
               "
               target="_blank"

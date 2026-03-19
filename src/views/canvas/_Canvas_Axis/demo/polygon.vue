@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { _Utility_GenerateUUID, _Canvas } from "nhanh-pure-function";
+import { _Utility_GenerateUUID, _Canvas_Axis } from "nhanh-pure-function";
 import { onMounted, shallowRef } from "vue";
 import { Settings } from "@/components/popups/components/Settings";
 import UpdateData from "../updateData.vue";
 
 const id = _Utility_GenerateUUID();
 
-let myCanvas = shallowRef<_Canvas>();
-const line_value = new _Canvas.Line({
+let myCanvas = shallowRef<_Canvas_Axis>();
+const polygon_value = new _Canvas_Axis.Polygon({
   value: [
     [0, 2],
     [2, 2],
@@ -15,7 +15,7 @@ const line_value = new _Canvas.Line({
   ],
   isDraggable: true,
 });
-const line_position = new _Canvas.Line({
+const polygon_position = new _Canvas_Axis.Polygon({
   position: [
     [-100, 0],
     [-100, -100],
@@ -23,25 +23,26 @@ const line_position = new _Canvas.Line({
   ],
   isDraggable: true,
 });
-const line_infinite = new _Canvas.Line({
+const polygon_rect = new _Canvas_Axis.Polygon({
   value: [
     [1, -1],
     [-1, 1],
   ],
-  isInfinite: true,
+  isRect: true,
   isDraggable: true,
+  borderRadius: 15,
 });
 
-const line_arr = [line_value, line_position, line_infinite];
+const polygon_arr = [polygon_value, polygon_position, polygon_rect];
 
 onMounted(() => {
-  myCanvas.value = new _Canvas({ id, theme: Settings.value.theme });
-  myCanvas.value.addOverlay(line_arr);
+  myCanvas.value = new _Canvas_Axis({ id, theme: Settings.value.theme });
+  myCanvas.value.addOverlay(polygon_arr);
 });
 defineExpose({ myCanvas });
 </script>
 
 <template>
-  <UpdateData :canvas="myCanvas" :overlays="line_arr" />
+  <UpdateData :canvas="myCanvas" :overlays="polygon_arr" />
   <canvas :id="id" class="my-canvas"></canvas>
 </template>

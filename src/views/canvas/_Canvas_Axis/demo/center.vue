@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { _Utility_GenerateUUID, _Canvas } from "nhanh-pure-function";
+import { _Utility_GenerateUUID, _Canvas_Axis } from "nhanh-pure-function";
 import { onMounted, ref, shallowRef, watch } from "vue";
 import { Settings } from "@/components/popups/components/Settings";
 import {
@@ -12,14 +12,14 @@ import {
 } from "naive-ui";
 
 const id = _Utility_GenerateUUID();
-const top = ref<_Canvas["defaultCenter"]["top"]>();
-const bottom = ref<_Canvas["defaultCenter"]["bottom"]>();
+const top = ref<_Canvas_Axis["defaultCenter"]["top"]>();
+const bottom = ref<_Canvas_Axis["defaultCenter"]["bottom"]>();
 const bottomUnit = ref<"" | "%">("");
-const left = ref<_Canvas["defaultCenter"]["left"]>();
-const right = ref<_Canvas["defaultCenter"]["right"]>();
+const left = ref<_Canvas_Axis["defaultCenter"]["left"]>();
+const right = ref<_Canvas_Axis["defaultCenter"]["right"]>();
 const rightUnit = ref<"" | "%">("");
 
-let myCanvas = shallowRef<_Canvas>();
+let myCanvas = shallowRef<_Canvas_Axis>();
 
 watch(
   () =>
@@ -37,10 +37,10 @@ watch(
       left,
       bottom: (bottom + bottomUnit) as any,
       right: (right + rightUnit) as any,
-    })
+    }),
 );
 onMounted(() => {
-  myCanvas.value = new _Canvas({ id, theme: Settings.value.theme });
+  myCanvas.value = new _Canvas_Axis({ id, theme: Settings.value.theme });
 });
 defineExpose({ myCanvas });
 </script>
@@ -54,7 +54,7 @@ defineExpose({ myCanvas });
         <NRadioButton value="bottom" label="bottom"></NRadioButton>
         <NRadioButton value="" label="空"></NRadioButton>
       </NRadioGroup>
-      <NInputNumber v-model:value="(bottom as number)">
+      <NInputNumber v-model:value="bottom as number">
         <template #prefix><NText style="width: 50px">bottom</NText></template>
         <template #suffix>
           <NButton @click="bottomUnit = bottomUnit ? '' : '%'" text>
@@ -70,7 +70,7 @@ defineExpose({ myCanvas });
         <NRadioButton value="right" label="right"></NRadioButton>
         <NRadioButton value="" label="空"></NRadioButton>
       </NRadioGroup>
-      <NInputNumber v-model:value="(right as number)">
+      <NInputNumber v-model:value="right as number">
         <template #prefix><NText style="width: 50px">right</NText></template>
         <template #suffix>
           <NButton @click="rightUnit = rightUnit ? '' : '%'" text>

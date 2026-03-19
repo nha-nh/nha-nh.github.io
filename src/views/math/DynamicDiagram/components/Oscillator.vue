@@ -2,7 +2,7 @@
 import {
   _Animate_CreateOscillator,
   _Browser_GetFrameRate,
-  _Canvas,
+  _Canvas_Axis,
 } from "nhanh-pure-function";
 import { onBeforeUnmount, ref, watch } from "vue";
 import { NButton, NIcon, NSlider } from "naive-ui";
@@ -15,7 +15,7 @@ import Media from "@/stores/media";
 import SvgGather from "@/assets/icon/gather";
 
 interface Props {
-  canvas?: _Canvas;
+  canvas?: _Canvas_Axis;
   value: number;
   marks: Record<string, string>;
   min?: number;
@@ -58,7 +58,7 @@ watch(
   () => props.disabled,
   (disabled) => {
     if (disabled && isPlay.value) UpdatePlay();
-  }
+  },
 );
 
 onBeforeUnmount(() => {

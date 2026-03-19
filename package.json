@@ -25,7 +25,7 @@
     "highlight.js": "^11.10.0",
     "jszip": "^3.10.1",
     "katex": "^0.16.11",
-    "nhanh-pure-function": "^3.0.7",
+    "nhanh-pure-function": "^4.0.0",
     "peerjs": "^1.5.4",
     "three": "^0.178.0",
     "vue": "^3.4.29",

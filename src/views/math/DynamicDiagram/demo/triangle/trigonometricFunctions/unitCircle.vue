@@ -2,12 +2,12 @@
 import { onMounted, ref, shallowRef } from "vue";
 import { Settings } from "@/components/popups/components/Settings";
 import Card from "@/views/math/DynamicDiagram/components/Card.vue";
-import { _Canvas, _Utility_GenerateUUID } from "nhanh-pure-function";
+import { _Canvas_Axis, _Utility_GenerateUUID } from "nhanh-pure-function";
 import { NSpace, NText } from "naive-ui";
 import { color } from ".";
 
 const id = _Utility_GenerateUUID();
-let canvas = shallowRef<_Canvas>();
+let canvas = shallowRef<_Canvas_Axis>();
 
 const num = (v: number) => Number(v.toFixed(3));
 const radians = ref(num(Math.PI / 4));
@@ -15,54 +15,54 @@ const sin = ref(0);
 const cos = ref(0);
 const tan = ref(0);
 
-const circle = new _Canvas.Arc({
+const circle = new _Canvas_Axis.Arc({
   value: [0, 0],
   startAngle: 0,
   endAngle: Math.PI * 2,
   radiusValue: 1,
   style: { stroke: { color: color[3] } },
 });
-const arc = new _Canvas.Arc({
+const arc = new _Canvas_Axis.Arc({
   value: [0, 0],
   startAngle: -Math.PI / 4,
   endAngle: 0,
   radiusValue: 0.3,
   style: { stroke: { color: color[3] } },
 });
-const a = new _Canvas.Line({
+const a = new _Canvas_Axis.Line({
   value: [
     [0, 0],
     [1, 0],
   ],
   style: { stroke: { color: color[0] } },
 });
-const b = new _Canvas.Line({
+const b = new _Canvas_Axis.Line({
   value: [
     [0, 0],
     [0, 1],
   ],
   style: { stroke: { color: color[1] } },
 });
-const c = new _Canvas.Line({
+const c = new _Canvas_Axis.Line({
   value: [
     [0, 0],
     [1, 1],
   ],
   style: { stroke: { color: "#8A8A8AFF" } },
 });
-const tanθ = new _Canvas.Line({
+const tanθ = new _Canvas_Axis.Line({
   value: [
     [0, 0],
     [1, 1],
   ],
   style: { stroke: { color: color[2] } },
 });
-const av = new _Canvas.Text({
+const av = new _Canvas_Axis.Text({
   text: "",
   value: [0.5, 0.5],
   style: { color: color[0] },
 });
-const bv = new _Canvas.Text({
+const bv = new _Canvas_Axis.Text({
   text: "",
   value: [0.5, 0.5],
   style: { color: color[1] },
@@ -119,7 +119,7 @@ function mouseMove(e: MouseEvent) {
 onMounted(() => {
   dom = document.getElementById(id);
 
-  canvas.value = new _Canvas({
+  canvas.value = new _Canvas_Axis({
     id,
     theme: Settings.value.theme,
     axisConfig: { count: 1, min: 150, y: -1 },

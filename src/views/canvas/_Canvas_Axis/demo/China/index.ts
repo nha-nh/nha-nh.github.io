@@ -2,7 +2,7 @@ import {
   _Format_NumberWithUnit,
   _Math_LngLatToPlane,
   _File_Read,
-  _Canvas,
+  _Canvas_Axis,
 } from "nhanh-pure-function";
 import type {
   OverlayType,
@@ -70,15 +70,15 @@ function ChinaData() {
         geometry.coordinates.forEach((v) => {
           v.forEach((item) => {
             chinaDataItem.geometry.push(
-              item.map((location) => _Math_LngLatToPlane(...location))
+              item.map((location) => _Math_LngLatToPlane(...location)),
             );
           });
         });
       } else {
         geometry.coordinates.forEach((v) =>
           chinaDataItem.geometry.push(
-            v.map((location) => _Math_LngLatToPlane(...location))
-          )
+            v.map((location) => _Math_LngLatToPlane(...location)),
+          ),
         );
       }
     });
@@ -87,8 +87,8 @@ function ChinaData() {
   });
 }
 
-export const myCanvas = shallowRef<_Canvas>();
-export const layer = new _Canvas.Layer({
+export const myCanvas = shallowRef<_Canvas_Axis>();
+export const layer = new _Canvas_Axis.Layer({
   name: "中国地图",
   scaleRange: [0.2, 100],
 });
@@ -100,11 +100,11 @@ ChinaData().then((chinaData) => {
     const name = item.properties.name;
 
     const info = provinceInfoMap.find((v) => v.name == name);
-    const overlayGroup = new _Canvas.OverlayGroup({ name, extData: info });
+    const overlayGroup = new _Canvas_Axis.OverlayGroup({ name, extData: info });
 
     const openInfoWindow = () => {
       const point = Array.from(overlayGroup.overlays).find(
-        (v) => v instanceof _Canvas.Point
+        (v) => v instanceof _Canvas_Axis.Point,
       );
 
       if (point) {
@@ -132,7 +132,7 @@ ChinaData().then((chinaData) => {
     };
 
     item.geometry.forEach((polygonData) => {
-      const polygon = new _Canvas.Polygon({
+      const polygon = new _Canvas_Axis.Polygon({
         name: name + "边界",
         isHandlePointsVisible: false,
         value: polygonData,
@@ -146,13 +146,13 @@ ChinaData().then((chinaData) => {
         if (event.data.state) openInfoWindow();
       };
       /** 省会城市 */
-      const capitalCity_point = new _Canvas.Point({
+      const capitalCity_point = new _Canvas_Axis.Point({
         name: "省会城市 " + name,
         value: center,
         scaleRange: [0.9, 100],
         zIndex: 1,
       });
-      const capitalCity_text = new _Canvas.Text({
+      const capitalCity_text = new _Canvas_Axis.Text({
         name: "省会城市 " + name,
         text: item.properties.name,
         value: center,
@@ -205,24 +205,24 @@ function GetProvinceInfoMap(info: Province, point: Point) {
 //#endregion
 
 //#region 景区
-export const attractionLayer = new _Canvas.Layer({
+export const attractionLayer = new _Canvas_Axis.Layer({
   name: "景区",
   isVisible: false,
 });
 const heatMapValue: [number, number][] = [];
 attractions.forEach((attraction) => {
   const name = attraction.name;
-  const group = new _Canvas.OverlayGroup({ name });
+  const group = new _Canvas_Axis.OverlayGroup({ name });
 
   const value = _Math_LngLatToPlane(...attraction.coordinates);
   heatMapValue.push(value);
-  const point = new _Canvas.Point({
+  const point = new _Canvas_Axis.Point({
     value,
     extData: attraction,
     scaleRange: [1, 100],
     zIndex: 1,
   });
-  const text = new _Canvas.Text({
+  const text = new _Canvas_Axis.Text({
     text: name,
     value,
     offset: { x: 0, y: 20 },
@@ -272,7 +272,7 @@ function GetAttractionsInfoMap(info?: Attraction, point?: Point) {
 const maxValue =
   attractions.reduce((prev, curr) => prev + curr.visitors, 0) /
   attractions.length;
-export const heatMapOverlay = new _Canvas.Custom({
+export const heatMapOverlay = new _Canvas_Axis.Custom({
   name: "景点热力图",
   value: heatMapValue,
   scaleRange: [0.8, 100],
@@ -319,7 +319,7 @@ export const heatMapOverlay = new _Canvas.Custom({
       0,
       colorBlokY + colorBlokHeight,
       0,
-      colorBlokY
+      colorBlokY,
     );
     colorBlok.addColorStop(1, "rgb(255,0,0)");
     colorBlok.addColorStop(0.55, "rgb(0,255,0)");
@@ -333,16 +333,16 @@ export const heatMapOverlay = new _Canvas.Custom({
     ctx.fillText(
       "≥" + _Format_NumberWithUnit(maxValue, { join: true }),
       colorBlokX + colorBlokWidth + padding,
-      colorBlokY + 16
+      colorBlokY + 16,
     );
     ctx.fillText(
       "0",
       colorBlokX + colorBlokWidth + padding,
-      colorBlokY + colorBlokHeight
+      colorBlokY + colorBlokHeight,
     );
   },
 });
-const heatMapGroup = new _Canvas.OverlayGroup({ name: "景点热力图" });
+const heatMapGroup = new _Canvas_Axis.OverlayGroup({ name: "景点热力图" });
 heatMapGroup.addOverlays(heatMapOverlay);
 attractionLayer.addGroup(heatMapGroup);
 //#endregion

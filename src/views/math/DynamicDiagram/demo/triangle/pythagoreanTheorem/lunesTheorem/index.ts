@@ -1,4 +1,4 @@
-import { _Canvas } from "nhanh-pure-function";
+import { _Canvas_Axis } from "nhanh-pure-function";
 import {
   _Math_CalculateDistance2D,
   _Utility_GenerateUUID,
@@ -11,7 +11,7 @@ export const id = _Utility_GenerateUUID();
 
 export const J_ABC = ref(45);
 const BC = 5;
-const t = new _Canvas.Polygon({
+const t = new _Canvas_Axis.Polygon({
   value: [
     [0, 0],
     [-BC / 2, 0],
@@ -19,7 +19,7 @@ const t = new _Canvas.Polygon({
   ],
   isInteractive: false,
 });
-const tra = new _Canvas.Line({
+const tra = new _Canvas_Axis.Line({
   isInteractive: false,
   style: { stroke: { color: "#18a058", width: 2 } },
 });
@@ -32,12 +32,12 @@ const text_config = (text: string, x = 0, y = 0) => ({
   style: { size: 25 },
   isInteractive: false,
 });
-const a_text = new _Canvas.Text(text_config("A", 0, -25));
-const b_text = new _Canvas.Text({
+const a_text = new _Canvas_Axis.Text(text_config("A", 0, -25));
+const b_text = new _Canvas_Axis.Text({
   value: [-BC / 2, 0],
   ...text_config("B", -10, 15),
 });
-const c_text = new _Canvas.Text({
+const c_text = new _Canvas_Axis.Text({
   ...text_config("C", 10, 15),
   value: [BC / 2, 0],
 });
@@ -45,7 +45,7 @@ const text = [a_text, b_text, c_text];
 
 const _canvas = document.createElement("canvas");
 const _ctx = _canvas.getContext("2d")!;
-const arc = new _Canvas.Custom({
+const arc = new _Canvas_Axis.Custom({
   value: [[0, 0]],
   draw(ctx) {
     const mainCanvas = arc.mainCanvas!;
@@ -91,7 +91,7 @@ const arc = new _Canvas.Custom({
 
       const path = new Path2D();
       path.arc(bc_mid[0], bc_mid[1], r, Math.PI, 0);
-      _Canvas.clearPathRegion(_ctx, path);
+      _Canvas_Axis.clearPathRegion(_ctx, path);
 
       _ctx.beginPath();
       _ctx.stroke(path);

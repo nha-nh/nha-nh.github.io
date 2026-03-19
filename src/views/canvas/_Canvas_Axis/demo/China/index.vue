@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { _Utility_GenerateUUID, _Canvas } from "nhanh-pure-function";
+import { _Utility_GenerateUUID, _Canvas_Axis } from "nhanh-pure-function";
 import { onMounted, ref } from "vue";
 import { Settings } from "@/components/popups/components/Settings";
 import ProvinceInfo from "./InfoWindow/Province.vue";
@@ -21,11 +21,11 @@ let oldTabActive = "省级行政区";
 function UpdateTabActive(tab: string) {
   if (oldTabActive == "省级行政区") {
     provincialAdministrativeRegions.forEach(
-      (overlay) => (overlay.isVisible = false)
+      (overlay) => (overlay.isVisible = false),
     );
   } else if (tab == "省级行政区") {
     provincialAdministrativeRegions.forEach(
-      (overlay) => (overlay.isVisible = true)
+      (overlay) => (overlay.isVisible = true),
     );
   }
   attractionLayer.isVisible = tab == "景区";
@@ -53,7 +53,7 @@ onMounted(() => {
   const left = rect.width / 2 - 600;
   const bottom = rect.height / 2 - 175;
 
-  myCanvas.value = new _Canvas({
+  myCanvas.value = new _Canvas_Axis({
     id,
     axisConfig: { y: -1, count: 2000000 },
     defaultCenter: { left, bottom },

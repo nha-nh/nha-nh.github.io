@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { _Utility_GenerateUUID, _Canvas } from "nhanh-pure-function";
+import { _Utility_GenerateUUID, _Canvas_Axis } from "nhanh-pure-function";
 import { onMounted, shallowRef, watch } from "vue";
 import { Settings } from "@/components/popups/components/Settings";
 import { NDivider, NFlex, NSpace, NText } from "naive-ui";
@@ -7,10 +7,10 @@ import SvgGather from "@/assets/icon/gather";
 
 const id = _Utility_GenerateUUID();
 
-let myCanvas = shallowRef<_Canvas>();
+let myCanvas = shallowRef<_Canvas_Axis>();
 
 onMounted(() => {
-  myCanvas.value = new _Canvas({ id, theme: Settings.value.theme });
+  myCanvas.value = new _Canvas_Axis({ id, theme: Settings.value.theme });
 });
 defineExpose({ myCanvas });
 </script>

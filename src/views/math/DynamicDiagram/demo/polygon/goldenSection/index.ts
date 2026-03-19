@@ -2,7 +2,7 @@ import {
   _Animate_CreateOscillator,
   _Animate_NumericTransition,
   _Browser_GetFrameRate,
-  _Canvas,
+  _Canvas_Axis,
   _Math_CalculateDistance2D,
   _Utility_GenerateUUID,
 } from "nhanh-pure-function";
@@ -18,7 +18,7 @@ function GetGoldenRatioY(a: [number, number], b: [number, number]) {
 }
 function GetGoldenRatio(
   a: [number, number],
-  b: [number, number]
+  b: [number, number],
 ): [number, number] {
   if (a[0] == b[0]) return [a[0], GetGoldenRatioY(a, b)];
   return [GetGoldenRatioX(a, b), a[1]];
@@ -31,27 +31,27 @@ const text_config = (text: string, value?: [number, number]) => ({
   style: { size: 20 },
   isInteractive: false,
 });
-const t_a = new _Canvas.Text(text_config("A", [-4, -5]));
-const t_b = new _Canvas.Text(text_config("B", [4, -5]));
-const t_p = new _Canvas.Text(
-  text_config("P", GetGoldenRatio(t_a.value!, t_b.value!))
+const t_a = new _Canvas_Axis.Text(text_config("A", [-4, -5]));
+const t_b = new _Canvas_Axis.Text(text_config("B", [4, -5]));
+const t_p = new _Canvas_Axis.Text(
+  text_config("P", GetGoldenRatio(t_a.value!, t_b.value!)),
 );
 
 const texts = [t_a, t_b, t_p];
 
-const l = new _Canvas.Line({
+const l = new _Canvas_Axis.Line({
   value: [t_a.value!, t_b.value!],
   isInteractive: false,
 });
 
-const p_a = new _Canvas.Point({ value: t_a.value });
-const p_b = new _Canvas.Point({ value: t_b.value });
-const p_p = new _Canvas.Point({ value: t_p.value });
+const p_a = new _Canvas_Axis.Point({ value: t_a.value });
+const p_b = new _Canvas_Axis.Point({ value: t_b.value });
+const p_p = new _Canvas_Axis.Point({ value: t_p.value });
 const points = [p_a, p_b, p_p];
 
 const m_l = t_b.value![0] - t_a.value![0];
 const m_l_g = t_p.value![0] - t_a.value![0];
-const m = new _Canvas.Polygon({
+const m = new _Canvas_Axis.Polygon({
   value: [
     [-(m_l_g / 2), -(m_l / 2)],
     [m_l_g / 2, m_l / 2],
@@ -111,14 +111,14 @@ for (let i = 0; i < 16; i++) {
 
   prev = value;
 
-  const _m = new _Canvas.Polygon({
+  const _m = new _Canvas_Axis.Polygon({
     value,
     isRect: true,
     style: { fill: "transparent" },
     isInteractive: false,
   });
 
-  const arc = new _Canvas.Arc({
+  const arc = new _Canvas_Axis.Arc({
     isInteractive: false,
     startAngle,
     endAngle,
@@ -131,7 +131,7 @@ for (let i = 0; i < 16; i++) {
 
 const names: (typeof t_a)[] = [];
 "斐波那契螺旋线/黄金螺旋线".split("").forEach((v, i) => {
-  const name = new _Canvas.Text({
+  const name = new _Canvas_Axis.Text({
     ...text_config(v, [m.value![1][0], m.value![0][1]]),
     offset: {
       x: 40,

@@ -1,5 +1,5 @@
 import {
-  _Canvas,
+  _Canvas_Axis,
   _Math_CalculateDistance2D,
   _Utility_GenerateUUID,
 } from "nhanh-pure-function";
@@ -7,7 +7,7 @@ import { ABC, MyMath } from "@/views/math/DynamicDiagram/tool";
 
 export const id = _Utility_GenerateUUID();
 
-const l = new _Canvas.Line({
+const l = new _Canvas_Axis.Line({
   value: [
     [0, -1.464],
     [-2, 2],
@@ -22,13 +22,13 @@ const config = (dash = true) => ({
   style: { stroke: { width: 2, dash } },
 });
 
-const abcl = new _Canvas.Line(config());
+const abcl = new _Canvas_Axis.Line(config());
 
-const abl = new _Canvas.Line(config());
-const ablra = new _Canvas.Line(config(false));
+const abl = new _Canvas_Axis.Line(config());
+const ablra = new _Canvas_Axis.Line(config(false));
 
-const bcl = new _Canvas.Line(config());
-const bclra = new _Canvas.Line(config(false));
+const bcl = new _Canvas_Axis.Line(config());
+const bclra = new _Canvas_Axis.Line(config(false));
 
 export const overlays = [l, abcl, abl, bcl, ablra, bclra];
 
@@ -55,8 +55,8 @@ export function Update() {
       abc.b,
       abc.c,
       { min: min.xV, max: max.xV },
-      { min: min.yV, max: max.yV }
-    ) || []
+      { min: min.yV, max: max.yV },
+    ) || [],
   );
 
   const data = MyMath.calculatePerpendiculars(abc.a, abc.b, abc.c);

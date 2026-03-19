@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { _Utility_GenerateUUID, _Canvas } from "nhanh-pure-function";
+import { _Utility_GenerateUUID, _Canvas_Axis } from "nhanh-pure-function";
 import { onMounted, shallowRef, watch } from "vue";
 import { Settings } from "@/components/popups/components/Settings";
 import { NP, NText } from "naive-ui";
 
 const id = _Utility_GenerateUUID();
 
-let myCanvas = shallowRef<_Canvas>();
-const custom_1 = new _Canvas.Custom({
+let myCanvas = shallowRef<_Canvas_Axis>();
+const custom_1 = new _Canvas_Axis.Custom({
   value: [
     [-1, -0.8],
     [0, 0],
@@ -25,7 +25,7 @@ const custom_1 = new _Canvas.Custom({
     ctx.fill();
   },
 });
-const custom_2 = new _Canvas.Custom({
+const custom_2 = new _Canvas_Axis.Custom({
   value: [
     [-0.8, -0.2],
     [0, 0],
@@ -44,29 +44,29 @@ const custom_2 = new _Canvas.Custom({
     ctx.fill();
   },
 });
-const text_value1 = new _Canvas.Text({
+const text_value1 = new _Canvas_Axis.Text({
   value: [0, 0.25],
   text: "text_value1",
   style: { color: "#208088", size: 20 },
   zIndex: 2,
 });
-const text_value2 = new _Canvas.Text({
+const text_value2 = new _Canvas_Axis.Text({
   value: [0, 0.45],
   text: "text_value2",
   style: { color: "#898033", size: 20 },
   zIndex: 3,
 });
-const point_value1 = new _Canvas.Point({
+const point_value1 = new _Canvas_Axis.Point({
   value: [0, -0.2],
   style: { stroke: "#2080f0", fill: "#2080f0", width: 20 },
   zIndex: 4,
 });
-const point_value2 = new _Canvas.Point({
+const point_value2 = new _Canvas_Axis.Point({
   value: [0, 0.2],
   style: { stroke: "#18a058", fill: "#18a058", width: 20 },
   zIndex: 5,
 });
-const line_value1 = new _Canvas.Line({
+const line_value1 = new _Canvas_Axis.Line({
   value: [
     [-2, 0],
     [2, 0],
@@ -74,7 +74,7 @@ const line_value1 = new _Canvas.Line({
   style: { stroke: { color: "#8a2be2", width: 10 } },
   zIndex: 6,
 });
-const line_value2 = new _Canvas.Line({
+const line_value2 = new _Canvas_Axis.Line({
   value: [
     [1, 1],
     [1, -1],
@@ -82,7 +82,7 @@ const line_value2 = new _Canvas.Line({
   style: { stroke: { color: "#ff69b4", width: 10 } },
   zIndex: 7,
 });
-const polygon_rect1 = new _Canvas.Polygon({
+const polygon_rect1 = new _Canvas_Axis.Polygon({
   value: [
     [-1, -1],
     [1, 1],
@@ -91,7 +91,7 @@ const polygon_rect1 = new _Canvas.Polygon({
   style: { fill: "#f0a020", stroke: { color: "#f0a020" } },
   zIndex: 8,
 });
-const polygon_rect2 = new _Canvas.Polygon({
+const polygon_rect2 = new _Canvas_Axis.Polygon({
   value: [
     [0, -1.5],
     [2, 0.5],
@@ -115,7 +115,7 @@ const overlay_arr = [
 ];
 
 onMounted(() => {
-  myCanvas.value = new _Canvas({
+  myCanvas.value = new _Canvas_Axis({
     id,
     isInteractive: false,
     theme: Settings.value.theme,
@@ -127,7 +127,7 @@ defineExpose({ myCanvas });
 
 <template>
   <NP>
-    <NText type="info"> _Canvas </NText> 工具默认配置了
+    <NText type="info"> _Canvas_Axis </NText> 工具默认配置了
     <NText type="success"> 5 </NText>
     个图层（自定义、文字、点 、线 、面）
   </NP>

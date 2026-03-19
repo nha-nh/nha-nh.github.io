@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { _Utility_GenerateUUID, _Canvas } from "nhanh-pure-function";
+import { _Utility_GenerateUUID, _Canvas_Axis } from "nhanh-pure-function";
 import { onMounted, shallowRef } from "vue";
 import { Settings } from "@/components/popups/components/Settings";
 import UpdateData from "../updateData.vue";
 
 const id = _Utility_GenerateUUID();
 
-let myCanvas = shallowRef<_Canvas>();
+let myCanvas = shallowRef<_Canvas_Axis>();
 
-const arcTo_value = new _Canvas.ArcTo({
+const arcTo_value = new _Canvas_Axis.ArcTo({
   value: [
     [0, 2],
     [-4, -4],
@@ -21,7 +21,7 @@ const arcTo_value = new _Canvas.ArcTo({
 const arcToArr = [arcTo_value];
 
 onMounted(() => {
-  myCanvas.value = new _Canvas({ id, theme: Settings.value.theme });
+  myCanvas.value = new _Canvas_Axis({ id, theme: Settings.value.theme });
 });
 defineExpose({ myCanvas });
 </script>

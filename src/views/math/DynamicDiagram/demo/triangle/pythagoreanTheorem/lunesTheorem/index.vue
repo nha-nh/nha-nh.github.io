@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { _Canvas } from "nhanh-pure-function";
+import { _Canvas_Axis } from "nhanh-pure-function";
 import { onMounted, shallowRef } from "vue";
 import { Settings } from "@/components/popups/components/Settings";
 import { overlays, id, Update, J_ABC } from ".";
@@ -8,7 +8,7 @@ import Card from "@/views/math/DynamicDiagram/components/Card.vue";
 import Media from "@/stores/media";
 import { NEquation } from "naive-ui";
 
-let myCanvas = shallowRef<_Canvas>();
+let myCanvas = shallowRef<_Canvas_Axis>();
 
 const equation = `\\begin{aligned}
 S_{\\text{月牙}} &= S_{\\text{整}} - S_{\\text{半圆}BC} \\\\ 
@@ -19,7 +19,7 @@ S_{\\text{月牙}} &= S_{\\text{整}} - S_{\\text{半圆}BC} \\\\
 \\end{aligned}`;
 
 onMounted(() => {
-  myCanvas.value = new _Canvas({
+  myCanvas.value = new _Canvas_Axis({
     id,
     theme: Settings.value.theme,
     axisShow: false,
