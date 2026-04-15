@@ -137,7 +137,7 @@ ChinaData().then((chinaData) => {
         isHandlePointsVisible: false,
         value: polygonData,
       });
-      overlayGroup.addOverlays(polygon);
+      overlayGroup.addOverlay(polygon);
     });
 
     const center = item.properties.center;
@@ -165,7 +165,7 @@ ChinaData().then((chinaData) => {
       capitalCity_text.addEventListener("click", clickEvent);
 
       provincialAdministrativeRegions.push(capitalCity_point, capitalCity_text);
-      overlayGroup.addOverlays([capitalCity_point, capitalCity_text]);
+      overlayGroup.addOverlay([capitalCity_point, capitalCity_text]);
     }
 
     overlayGroup.addEventListener("click", commonClickEvent);
@@ -236,7 +236,7 @@ attractions.forEach((attraction) => {
     } else GetAttractionsInfoMap();
   });
 
-  group.addOverlays([point, text]);
+  group.addOverlay([point, text]);
   attractionLayer.addGroup(group);
 });
 //#endregion
@@ -343,6 +343,6 @@ export const heatMapOverlay = new _Canvas_Axis.Custom({
   },
 });
 const heatMapGroup = new _Canvas_Axis.OverlayGroup({ name: "景点热力图" });
-heatMapGroup.addOverlays(heatMapOverlay);
+heatMapGroup.addOverlay(heatMapOverlay);
 attractionLayer.addGroup(heatMapGroup);
 //#endregion
