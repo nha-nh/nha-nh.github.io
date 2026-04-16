@@ -15,7 +15,11 @@ import {
   NColorPicker,
   NH4,
 } from "naive-ui";
-import { ArrowBackOutline, ArrowForwardOutline } from "@vicons/ionicons5";
+import {
+  ArrowBackOutline,
+  ArrowForwardOutline,
+  CopyOutline,
+} from "@vicons/ionicons5";
 import { computed, onUnmounted, ref } from "vue";
 import { novelService, type Chapter } from ".";
 import ChapterContent from "./ChapterContent.vue";
@@ -24,6 +28,7 @@ import Collapse from "@/components/singleFile/Collapse.vue";
 import SvgGather from "@/assets/icon/gather";
 import ResponsiveDirectionLayout from "@/components/layout/ResponsiveDirectionLayout.vue";
 import Media from "@/stores/media";
+import { _Browser_CopyToClipboard, _Tip } from "nhanh-pure-function";
 
 interface Emit {
   (e: "close"): void;
@@ -48,7 +53,7 @@ type ChapterDetailsLocalType = {
 };
 const chapterDetailsLocal = useLocalStorage<ChapterDetailsLocalType>(
   "novel-chapter-reading-mode",
-  {} as any
+  {} as any,
 );
 
 const readingStyle = computed(() => {
@@ -97,7 +102,7 @@ function scrollToTop() {
 /** 滚动条滚动指定距离 */
 function scrollTo(y: number) {
   const container = scrollbarRef.value?.$el.nextSibling.querySelector(
-    ".n-scrollbar-container"
+    ".n-scrollbar-container",
   ) as HTMLElement;
   if (container) container.scrollTop += y;
 }
@@ -263,6 +268,21 @@ onUnmounted(() => window.removeEventListener("keydown", shortcutKey));
                 <NRadioButton :value="true" label="min" />
                 <NRadioButton :value="false" label="max" />
               </NRadioGroup>
+
+              <NButton
+                size="small"
+                @click="
+                  _Tip
+                    .success('复制完成')
+                    .error('复制失败')
+                    .run(_Browser_CopyToClipboard(chapterDetails!.content))
+                "
+              >
+                <template #icon>
+                  <NIcon :component="CopyOutline" />
+                </template>
+                复制
+              </NButton>
             </div>
           </Collapse>
           <NButtonGroup size="small">
