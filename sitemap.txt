@@ -1,4 +1,4 @@
-https://nha-nh.github.io/canvas/_Canvas/
+https://nha-nh.github.io/canvas/_Canvas_Axis/
 https://nha-nh.github.io/canvas/YOLOFormatAnnotator/
 https://nha-nh.github.io/canvas/Threejs/
 https://nha-nh.github.io/canvas/GLSL/
