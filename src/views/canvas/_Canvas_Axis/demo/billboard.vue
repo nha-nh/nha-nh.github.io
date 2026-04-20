@@ -24,7 +24,6 @@ const billboard = new _Canvas_Axis.Billboard({
   isDraggable: true,
   objectFit: objectFit.value,
 });
-
 function updateUrl(value: string) {
   billboard.url = value;
 }
