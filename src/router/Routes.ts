@@ -237,6 +237,40 @@ const multimedia: CustomRouteRecord = {
     },
   ],
 };
+
+/** 业务 */
+const business: CustomRouteRecord = {
+  path: "business",
+  name: "business",
+  meta: {
+    icon: SvgGather({ icon: "ColumnDependency" }),
+    name: {
+      zhCN: "业务",
+      enUS: "Business",
+    },
+    details: {
+      zhCN: "业务流程相关工具集合，包含 BPMN 建模与流程图编辑页面。",
+      enUS: "Business flow tools including BPMN modeling and diagram editing.",
+    },
+  },
+  children: [
+    {
+      path: "bpmn.js",
+      name: "BpmnJs",
+      meta: {
+        name: {
+          zhCN: "bpmn.js",
+          enUS: "bpmn.js",
+        },
+        details: {
+          zhCN: "基于 bpmn.js 的流程建模页面，支持 BPMN 图编辑与展示。",
+          enUS: "BPMN modeling page based on bpmn.js for editing and preview.",
+        },
+      },
+      component: () => import("@/views/business/BpmnJs/index.vue"),
+    },
+  ],
+};
 /** 解乏 */
 const relaxRouting: CustomRouteRecord = {
   path: "relax",
@@ -304,6 +338,7 @@ const relaxRouting: CustomRouteRecord = {
 const AllRoute = [
   // home,
   multimedia,
+  business,
   canvas,
   math,
   relaxRouting,

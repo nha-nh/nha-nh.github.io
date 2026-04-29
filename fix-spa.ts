@@ -93,6 +93,16 @@ const routes = [
     "/404",
     "涵盖Canvas绘画（YOLO8标注、Threejs、GLSL、图片打散重组、网格文字生成）、数学动态图解、多媒体（取流、在线PCM/MP3/WAV音频可视化播放器）、解乏小组件（弹跳球、小说搜索等）等前端实用工具集。",
   ],
+  [
+    "业务/Business",
+    "/business",
+    "业务工具集合，包含 BPMN 建模与流程图编辑页面。/Business tools including BPMN modeling and diagram editing.",
+  ],
+  [
+    "BPMN 建模与流程图编辑/BPMN Modeling and Diagram Editing",
+    "/business/BpmnJs",
+    "基于 bpmn.js 的流程建模页面，支持 BPMN 图编辑与展示。/BPMN modeling page based on bpmn.js for editing and preview.",
+  ],
 ];
 
 export default {
