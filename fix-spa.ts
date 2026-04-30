@@ -103,6 +103,11 @@ const routes = [
     "/business/BpmnJs",
     "基于 bpmn.js 的流程建模页面，支持 BPMN 图编辑与展示。/BPMN modeling page based on bpmn.js for editing and preview.",
   ],
+  [
+    "表单设计器/Form Designer",
+    "/business/FormJs",
+    "基于 form-js 的表单设计器，支持表单设计与展示。/Form designer based on form-js for designing and previewing.",
+  ],
 ];
 
 export default {
