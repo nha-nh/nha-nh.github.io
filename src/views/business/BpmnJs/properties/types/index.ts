@@ -1,5 +1,4 @@
 import BpmnModeler from "bpmn-js/lib/Modeler";
-import { getProcessGroup } from "./process";
 import { getStartEventGroup } from "./start-event";
 import { getTaskGroup } from "./task";
 import type { Element as BpmnElement } from "bpmn-js/lib/model/Types";
@@ -45,9 +44,5 @@ export const customBpmnGroups: GroupConfig[] = [
   {
     type: "bpmn:StartEvent",
     group: getStartEventGroup,
-  },
-  {
-    type: "bpmn:Process",
-    group: getProcessGroup,
   },
 ];

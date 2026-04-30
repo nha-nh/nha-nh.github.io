@@ -1,0 +1,50 @@
+/** 画布周边 UI：调色板、工具条、小地图等共用视觉 token */
+@bpmn-toolbar-inset: 15px;
+
+@toolbar-surface-bg: rgba(255, 255, 255, 0.92);
+@toolbar-surface-border: 1px solid rgba(0, 0, 0, 0.08);
+@toolbar-surface-radius: 8px;
+@toolbar-surface-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+@toolbar-divider-color: rgba(0, 0, 0, 0.1);
+
+/** 仅外观（无内边距），供 BPMN 内置调色板 / 小地图等使用 */
+.bpmn-ui-chrome-surface() {
+  background: @toolbar-surface-bg;
+  border: @toolbar-surface-border;
+  border-radius: @toolbar-surface-radius;
+  box-shadow: @toolbar-surface-shadow;
+}
+
+/** 竖条工具区（缩放、快捷键触发器） */
+.toolbar-floating-surface() {
+  .bpmn-ui-chrome-surface();
+  padding: 4px 2px;
+}
+
+/** 横向 pill 分组（导入导出等） */
+.toolbar-pill-surface() {
+  .bpmn-ui-chrome-surface();
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 4px;
+}
+
+.toolbar-icon-button() {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+}
+
+.toolbar-divider-vertical() {
+  width: 1px;
+  height: 18px;
+  background: @toolbar-divider-color;
+  margin: 0 2px;
+}
+
+.toolbar-divider-horizontal() {
+  width: 20px;
+  height: 1px;
+  background: @toolbar-divider-color;
+  margin: 2px 0;
+}

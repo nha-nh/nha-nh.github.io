@@ -11,6 +11,7 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@bpmn-io/form-js": "^1.21.3",
     "@bpmn-io/properties-panel": "^3.41.2",
     "@ffmpeg/ffmpeg": "^0.12.15",
     "@ffmpeg/util": "^0.12.2",
@@ -33,6 +34,7 @@
     "katex": "^0.16.11",
     "nhanh-pure-function": "^4.2.2",
     "peerjs": "^1.5.4",
+    "preact": "^10.15.1",
     "three": "^0.178.0",
     "vue": "^3.4.29",
     "vue-router": "^4.5.1"

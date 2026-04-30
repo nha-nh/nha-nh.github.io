@@ -255,7 +255,7 @@ const business: CustomRouteRecord = {
   },
   children: [
     {
-      path: "bpmn.js",
+      path: "BpmnJs",
       name: "BpmnJs",
       meta: {
         name: {
@@ -268,6 +268,21 @@ const business: CustomRouteRecord = {
         },
       },
       component: () => import("@/views/business/BpmnJs/index.vue"),
+    },
+    {
+      path: "FormJs",
+      name: "FormJs",
+      meta: {
+        name: {
+          zhCN: "form.js",
+          enUS: "form.js",
+        },
+        details: {
+          zhCN: "基于 form.js 的表单设计与预览页面。",
+          enUS: "Form design and preview page based on form.js.",
+        },
+      },
+      component: () => import("@/views/business/FormJs/index.vue"),
     },
   ],
 };

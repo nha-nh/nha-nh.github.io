@@ -170,6 +170,21 @@ const translations: Record<string, string> = {
   Date: "日期",
   Duration: "持续时间",
   Cycle: "周期",
+  Value: "值",
+  "A cycle defined as ISO 8601 repeating intervals format.":
+    "以 ISO 8601 重复间隔格式定义的周期。",
+  "every 10 seconds, up to 5 times": "每 10 秒一次，最多 5 次",
+  "every day, infinitely": "每天一次，无限重复",
+  "Documentation: Timer events": "文档：定时器事件",
+  "A time duration defined as ISO 8601 durations format.":
+    "以 ISO 8601 持续时间格式定义的时间段。",
+  "15 seconds": "15 秒",
+  "1 hour and 30 minutes": "1 小时 30 分钟",
+  "14 days": "14 天",
+  "A specific point in time defined as ISO 8601 combined date and time representation.":
+    "以 ISO 8601 日期与时间组合表示法定义的特定时间点。",
+  "UTC time": "UTC 时间",
+  "UTC plus 2 hours zone offset": "UTC +2 小时时区偏移",
   "Signal Intermediate Catch Event": "信号中间捕获事件",
   "Global signal reference": "全局信号引用",
   "Create new ...": "新建...",
@@ -198,6 +213,7 @@ const translations: Record<string, string> = {
   "Align elements": "对齐元素",
   "Multiple elements are selected. Select a single element to edit its properties.":
     "已选中多个元素。请选择单个元素以编辑其属性。",
+  "Collapsed Ad Hoc Sub Process": "折叠临时子流程",
 };
 
 const untranslated = new Set();
