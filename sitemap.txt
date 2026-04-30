@@ -16,3 +16,6 @@ https://nha-nh.github.io/multimedia/
 https://nha-nh.github.io/relax/
 https://nha-nh.github.io//
 https://nha-nh.github.io/404/
+https://nha-nh.github.io/business/
+https://nha-nh.github.io/business/BpmnJs/
+https://nha-nh.github.io/business/FormJs/
