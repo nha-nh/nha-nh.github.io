@@ -34,6 +34,11 @@ const routes = [
     "将文本映射到网格生成像素化文字效果，支持导出与样式调整。/Generate pixelated text on grids with export and styling options.",
   ],
   [
+    "Bézier 曲线/Bézier Curve",
+    "/canvas/BezierCurve",
+    "二次与三次 Bézier 曲线可视化：拖拽控制点、控制折线、t 处点与切线。/Quadratic and cubic Bézier with draggable points, control net, point at t and tangent.",
+  ],
+  [
     "动态图解/Dynamic Diagram",
     "/math/DynamicDiagram",
     "用动画展示几何与数学关系的动态图解，支持参数交互与说明。/Animated diagrams for geometry and math with interactive parameters.",
@@ -66,7 +71,7 @@ const routes = [
   [
     "Canvas 绘画/Canvas Drawing",
     "/canvas",
-    "Canvas绘画工具集合：YOLO8标注、Threejs、GLSL、图片打散重组、网格文字生成等在线演示。/Canvas tools: YOLO8 annotator, Three.js, GLSL, image scatter/recombine, grid text.",
+    "Canvas绘画工具集合：YOLO8标注、Threejs、GLSL、图片打散重组、网格文字生成、Bézier 曲线等在线演示。/Canvas tools: YOLO8 annotator, Three.js, GLSL, image scatter/recombine, grid text, Bézier curves.",
   ],
   [
     "数学/Math",
@@ -86,12 +91,12 @@ const routes = [
   [
     "前端Canvas工具集 - 可视化/绘图/音频/数学动态图解/Frontend Canvas Toolkit - Visualization/Drawing/Audio/Math Dynamic Diagram",
     "/",
-    "涵盖Canvas绘画（YOLO8标注、Threejs、GLSL、图片打散重组、网格文字生成）、数学动态图解、多媒体（取流、在线PCM/MP3/WAV音频可视化播放器）、解乏小组件（弹跳球、小说搜索等）等前端实用工具集。",
+    "涵盖Canvas绘画（YOLO8标注、Threejs、GLSL、图片打散重组、网格文字生成、Bézier 曲线）、数学动态图解、多媒体（取流、在线PCM/MP3/WAV音频可视化播放器）、解乏小组件（弹跳球、小说搜索等）等前端实用工具集。",
   ],
   [
     "前端Canvas工具集 - 可视化/绘图/音频/数学动态图解/Frontend Canvas Toolkit - Visualization/Drawing/Audio/Math Dynamic Diagram",
     "/404",
-    "涵盖Canvas绘画（YOLO8标注、Threejs、GLSL、图片打散重组、网格文字生成）、数学动态图解、多媒体（取流、在线PCM/MP3/WAV音频可视化播放器）、解乏小组件（弹跳球、小说搜索等）等前端实用工具集。",
+    "涵盖Canvas绘画（YOLO8标注、Threejs、GLSL、图片打散重组、网格文字生成、Bézier 曲线）、数学动态图解、多媒体（取流、在线PCM/MP3/WAV音频可视化播放器）、解乏小组件（弹跳球、小说搜索等）等前端实用工具集。",
   ],
   [
     "业务/Business",

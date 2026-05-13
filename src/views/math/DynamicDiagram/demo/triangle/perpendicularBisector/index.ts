@@ -128,4 +128,4 @@ export function Update() {
     yd.value = [_y.x, _y.y];
   }
 }
-m.addEventListener("dragg", Update);
+m.addEventListener("drag", Update);

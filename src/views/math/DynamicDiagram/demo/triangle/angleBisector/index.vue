@@ -14,7 +14,7 @@ onMounted(() => {
     axisShow: false,
   });
   myCanvas.value.addOverlay(overlays);
-  myCanvas.value.addEventListener("dragg", Update);
+  myCanvas.value.addEventListener("drag", Update);
   Update();
 });
 </script>

@@ -8,6 +8,7 @@ import {
   NGi,
   NModal,
   NImage,
+  NScrollbar,
 } from "naive-ui";
 import {
   CameraOutline,
@@ -150,11 +151,11 @@ const recordingTime = computed(
   () =>
     `${String(parseInt(recordingStartTime.value / 3600 + "") % 24).padStart(
       2,
-      "0"
+      "0",
     )}:${String(parseInt(recordingStartTime.value / 60 + "") % 60).padStart(
       2,
-      "0"
-    )}:${String(recordingStartTime.value % 60).padStart(2, "0")}`
+      "0",
+    )}:${String(recordingStartTime.value % 60).padStart(2, "0")}`,
 );
 /** 开始录制 */
 function startRecording() {
@@ -302,211 +303,216 @@ onUnmounted(() => {
   <div style="height: 100%">
     <ResponsiveDirectionLayout>
       <template #left>
-        <NSpace vertical>
-          <!-- 屏幕媒体流控制 -->
+        <NScrollbar style="max-height: 100%">
           <NSpace vertical>
-            <NStatistic
-              label="屏幕状态"
-              :value="isScreenActive ? '活跃' : '未激活'"
-            >
-              <template #suffix>
-                <NIcon
-                  :color="isScreenActive ? 'green' : 'red'"
-                  :component="
-                    isScreenActive ? VideocamOutline : VideocamOffOutline
-                  "
-                />
-              </template>
-            </NStatistic>
-            <NSpace>
-              <NButton
-                @click="AAddScreenStream"
-                type="primary"
-                ghost
-                :disabled="isScreenActive"
+            <!-- 屏幕媒体流控制 -->
+            <NSpace vertical>
+              <NStatistic
+                label="屏幕状态"
+                :value="isScreenActive ? '活跃' : '未激活'"
               >
-                <template #icon>
-                  <NIcon :component="DesktopOutline" />
-                </template>
-                提取屏幕
-              </NButton>
-              <NButton
-                @click="ACloseScreenStream"
-                type="error"
-                ghost
-                :disabled="!isScreenActive"
-              >
-                <template #icon>
-                  <NIcon :component="DesktopOutline" />
-                </template>
-                关闭屏幕
-              </NButton>
-              <NButton
-                @click="togglePictureInPicture(DisplayMedia)"
-                type="info"
-                ghost
-                :disabled="!isScreenActive"
-              >
-                <template #icon>
+                <template #suffix>
                   <NIcon
+                    :color="isScreenActive ? 'green' : 'red'"
                     :component="
-                      isScreenActive && pictureInPictureElement === DisplayMedia
-                        ? ContractOutline
-                        : ExpandOutline
+                      isScreenActive ? VideocamOutline : VideocamOffOutline
                     "
                   />
                 </template>
-                画中画
-              </NButton>
+              </NStatistic>
+              <NSpace>
+                <NButton
+                  @click="AAddScreenStream"
+                  type="primary"
+                  ghost
+                  :disabled="isScreenActive"
+                >
+                  <template #icon>
+                    <NIcon :component="DesktopOutline" />
+                  </template>
+                  提取屏幕
+                </NButton>
+                <NButton
+                  @click="ACloseScreenStream"
+                  type="error"
+                  ghost
+                  :disabled="!isScreenActive"
+                >
+                  <template #icon>
+                    <NIcon :component="DesktopOutline" />
+                  </template>
+                  关闭屏幕
+                </NButton>
+                <NButton
+                  @click="togglePictureInPicture(DisplayMedia)"
+                  type="info"
+                  ghost
+                  :disabled="!isScreenActive"
+                >
+                  <template #icon>
+                    <NIcon
+                      :component="
+                        isScreenActive &&
+                        pictureInPictureElement === DisplayMedia
+                          ? ContractOutline
+                          : ExpandOutline
+                      "
+                    />
+                  </template>
+                  画中画
+                </NButton>
+              </NSpace>
             </NSpace>
-          </NSpace>
 
-          <!-- 摄像头媒体流控制 -->
-          <NSpace vertical>
-            <NStatistic
-              label="摄像头状态"
-              :value="isCameraActive ? '活跃' : '未激活'"
-            >
-              <template #suffix>
-                <NIcon
-                  :color="isCameraActive ? 'green' : 'red'"
-                  :component="
-                    isCameraActive ? VideocamOutline : VideocamOffOutline
-                  "
-                />
-              </template>
-            </NStatistic>
-            <NSpace>
-              <NButton
-                @click="AAddCameraStream"
-                type="primary"
-                ghost
-                :disabled="isCameraActive"
+            <!-- 摄像头媒体流控制 -->
+            <NSpace vertical>
+              <NStatistic
+                label="摄像头状态"
+                :value="isCameraActive ? '活跃' : '未激活'"
               >
-                <template #icon>
-                  <NIcon :component="CameraOutline" />
-                </template>
-                提取摄像头
-              </NButton>
-              <NButton
-                @click="ACloseCameraStream"
-                type="error"
-                ghost
-                :disabled="!isCameraActive"
-              >
-                <template #icon>
-                  <NIcon :component="CameraOutline" />
-                </template>
-                关闭摄像头
-              </NButton>
-              <NButton
-                @click="togglePictureInPicture(UserMedia)"
-                type="info"
-                ghost
-                :disabled="!isCameraActive"
-              >
-                <template #icon>
+                <template #suffix>
                   <NIcon
+                    :color="isCameraActive ? 'green' : 'red'"
                     :component="
-                      isCameraActive && pictureInPictureElement === UserMedia
-                        ? ContractOutline
-                        : ExpandOutline
+                      isCameraActive ? VideocamOutline : VideocamOffOutline
                     "
                   />
                 </template>
-                画中画
-              </NButton>
+              </NStatistic>
+              <NSpace>
+                <NButton
+                  @click="AAddCameraStream"
+                  type="primary"
+                  ghost
+                  :disabled="isCameraActive"
+                >
+                  <template #icon>
+                    <NIcon :component="CameraOutline" />
+                  </template>
+                  提取摄像头
+                </NButton>
+                <NButton
+                  @click="ACloseCameraStream"
+                  type="error"
+                  ghost
+                  :disabled="!isCameraActive"
+                >
+                  <template #icon>
+                    <NIcon :component="CameraOutline" />
+                  </template>
+                  关闭摄像头
+                </NButton>
+                <NButton
+                  @click="togglePictureInPicture(UserMedia)"
+                  type="info"
+                  ghost
+                  :disabled="!isCameraActive"
+                >
+                  <template #icon>
+                    <NIcon
+                      :component="
+                        isCameraActive && pictureInPictureElement === UserMedia
+                          ? ContractOutline
+                          : ExpandOutline
+                      "
+                    />
+                  </template>
+                  画中画
+                </NButton>
+              </NSpace>
             </NSpace>
-          </NSpace>
 
-          <!-- 录制控制 -->
-          <NSpace vertical>
-            <NStatistic
-              label="录制状态"
-              :value="isRecording ? '进行中' : '未开始'"
-            >
-              <template #prefix>
-                <NIcon
-                  :color="isRecording ? 'red' : 'gray'"
-                  :component="
-                    isRecording ? RecordingOutline : StopCircleOutline
+            <!-- 录制控制 -->
+            <NSpace vertical>
+              <NStatistic
+                label="录制状态"
+                :value="isRecording ? '进行中' : '未开始'"
+              >
+                <template #prefix>
+                  <NIcon
+                    :color="isRecording ? 'red' : 'gray'"
+                    :component="
+                      isRecording ? RecordingOutline : StopCircleOutline
+                    "
+                  />
+                </template>
+                <template #suffix>
+                  {{ recordingTime }}
+                </template>
+              </NStatistic>
+              <NSpace>
+                <NButton
+                  @click="startRecording"
+                  type="error"
+                  ghost
+                  :disabled="
+                    isRecording || (!isScreenActive && !isCameraActive)
                   "
-                />
-              </template>
-              <template #suffix>
-                {{ recordingTime }}
-              </template>
-            </NStatistic>
+                >
+                  <template #icon>
+                    <NIcon :component="RecordingOutline" />
+                  </template>
+                  开始录制
+                </NButton>
+                <NButton
+                  @click="stopRecording"
+                  type="error"
+                  :disabled="!isRecording"
+                >
+                  <template #icon>
+                    <NIcon :component="StopCircleOutline" />
+                  </template>
+                  停止录制
+                </NButton>
+              </NSpace>
+            </NSpace>
+
+            <!-- 其他功能 -->
             <NSpace>
               <NButton
-                @click="startRecording"
-                type="error"
+                @click="takeScreenshot"
+                type="info"
                 ghost
-                :disabled="isRecording || (!isScreenActive && !isCameraActive)"
+                :disabled="!isScreenActive && !isCameraActive"
               >
                 <template #icon>
-                  <NIcon :component="RecordingOutline" />
+                  <NIcon :component="ImageOutline" />
                 </template>
-                开始录制
+                截图
               </NButton>
-              <NButton
-                @click="stopRecording"
-                type="error"
-                :disabled="!isRecording"
-              >
+              <NButton @click="showStats = !showStats" type="info" ghost>
                 <template #icon>
-                  <NIcon :component="StopCircleOutline" />
+                  <NIcon :component="StatsChartOutline" />
                 </template>
-                停止录制
+                统计信息
               </NButton>
             </NSpace>
-          </NSpace>
 
-          <!-- 其他功能 -->
-          <NSpace>
-            <NButton
-              @click="takeScreenshot"
-              type="info"
-              ghost
-              :disabled="!isScreenActive && !isCameraActive"
-            >
-              <template #icon>
-                <NIcon :component="ImageOutline" />
-              </template>
-              截图
-            </NButton>
-            <NButton @click="showStats = !showStats" type="info" ghost>
-              <template #icon>
-                <NIcon :component="StatsChartOutline" />
-              </template>
-              统计信息
-            </NButton>
+            <!-- 统计信息面板 -->
+            <NSpace vertical v-if="showStats">
+              <NGrid :cols="2" x-gap="12" y-gap="12">
+                <NGi>
+                  <NStatistic
+                    label="屏幕分辨率"
+                    :value="`${stats.screen.width}×${stats.screen.height}`"
+                  />
+                </NGi>
+                <NGi>
+                  <NStatistic label="屏幕帧率" :value="stats.screen.fps" />
+                </NGi>
+                <NGi>
+                  <NStatistic
+                    label="摄像头分辨率"
+                    :value="`${stats.camera.width}×${stats.camera.height}`"
+                  />
+                </NGi>
+                <NGi>
+                  <NStatistic label="摄像头帧率" :value="stats.camera.fps" />
+                </NGi>
+              </NGrid>
+            </NSpace>
           </NSpace>
-
-          <!-- 统计信息面板 -->
-          <NSpace vertical v-if="showStats">
-            <NGrid :cols="2" x-gap="12" y-gap="12">
-              <NGi>
-                <NStatistic
-                  label="屏幕分辨率"
-                  :value="`${stats.screen.width}×${stats.screen.height}`"
-                />
-              </NGi>
-              <NGi>
-                <NStatistic label="屏幕帧率" :value="stats.screen.fps" />
-              </NGi>
-              <NGi>
-                <NStatistic
-                  label="摄像头分辨率"
-                  :value="`${stats.camera.width}×${stats.camera.height}`"
-                />
-              </NGi>
-              <NGi>
-                <NStatistic label="摄像头帧率" :value="stats.camera.fps" />
-              </NGi>
-            </NGrid>
-          </NSpace>
-        </NSpace>
+        </NScrollbar>
       </template>
 
       <template #right>

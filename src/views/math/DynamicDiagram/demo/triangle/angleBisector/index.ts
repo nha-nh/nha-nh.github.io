@@ -66,4 +66,4 @@ export function Update() {
   bclra.value = MyMath.transform(data.bc.rightAngleSymbol);
 }
 
-l.addEventListener("dragg", Update);
+l.addEventListener("drag", Update);

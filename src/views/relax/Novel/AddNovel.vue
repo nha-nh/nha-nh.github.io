@@ -83,7 +83,7 @@ function handleSubmitClick() {
         () => {
           loading.value = false;
           showModal.value = false;
-        }
+        },
       );
       props.callback(promise);
     })
@@ -161,8 +161,8 @@ function analysis(fileList: UploadFileInfo[]) {
                   .error('复制失败')
                   .run(
                     _Browser_CopyToClipboard(
-                      '第 *(?:[零一二三四五六七八九十百千万亿]+|\\d+) *章[^\\n]*'
-                    )
+                      '第 *(?:[零一二三四五六七八九十百千万亿]+|\\d+) *章[^\\n]*',
+                    ),
                   )
               "
             >

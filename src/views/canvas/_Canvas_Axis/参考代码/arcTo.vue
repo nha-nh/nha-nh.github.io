@@ -89,7 +89,7 @@ class TextInput {
         const target = mr.target;
         if (target.nodeType !== 3) {
           console.error(
-            "突变记录类型为 CharacterData，但节点类型为 " + target.nodeType
+            "突变记录类型为 CharacterData，但节点类型为 " + target.nodeType,
           );
           return;
         }
@@ -107,7 +107,7 @@ class TextInput {
     idControl, // 元素中控件的 id（如果有的话，例如半径）
     valueMax, // 允许的值范围从 0 到 maxValue，包括边界值
     getStateValue, // 从状态对象获取值的函数
-    setStateValue
+    setStateValue,
   ) {
     // 设置状态对象上的值的函数
     this.#valueMax = valueMax;
@@ -229,7 +229,7 @@ function initDemoState({
     s.controlPoints,
     s.radius,
     s.canvasSize,
-    s.errorTolCenter
+    s.errorTolCenter,
   );
   s.pointActiveIndex = -1; // 当前没有活动点
   s.pointActiveMoving = false; // 活动点悬停（false）或移动（true）
@@ -249,7 +249,7 @@ function updateConstruction() {
       state.controlPoints,
       state.radius,
       state.canvasSize,
-      state.errorTolCenter
+      state.errorTolCenter,
     );
 }
 1;
@@ -335,7 +335,7 @@ function findConstruction([P0, P1, P2], r, canvasSize, errorTolCenter) {
         `P0(${P0.x},${P0.y}); ` +
         `P1(${P1.x},${P1.y}); ` +
         `P2(${P2.x},${P2.y}); ` +
-        `r=${r};`
+        `r=${r};`,
     );
   }
 
@@ -386,7 +386,7 @@ function doMouseMove(pointCursor, rBtnDown) {
   const [pointHitIndex, testDelta] = hitTestPoints(
     pointCursor,
     state.controlPoints,
-    state.hitDistance
+    state.hitDistance,
   );
   state.pointActiveIndex = pointHitIndex;
   canvas.style.cursor = pointHitIndex < 0 ? "auto" : "pointer";
@@ -456,7 +456,7 @@ function moveActivePointAndUpdate(pointCursor) {
 function drawCanvas() {
   const rPoint = 4;
   const colorConstruction = "#080";
-  const colorDragable = "#00F";
+  const colorDraggable = "#00F";
   const [P0, P1, P2] = state.controlPoints;
 
   ctx.font = "italic 14pt sans-serif";
@@ -498,7 +498,7 @@ function drawCanvas() {
     ctx.fillText(
       " r",
       0.5 * (state.T1.x + state.C.x),
-      0.5 * (state.T1.y + state.C.y)
+      0.5 * (state.T1.y + state.C.y),
     );
   } else {
     // 没有圆
@@ -515,7 +515,7 @@ function drawCanvas() {
   state.controlPoints.forEach((value) => {
     ctx.beginPath();
     ctx.arc(value.x, value.y, rPoint, 0, 2 * Math.PI);
-    ctx.fillStyle = colorDragable;
+    ctx.fillStyle = colorDraggable;
     ctx.fill();
   });
   ctx.fillStyle = "#000";
@@ -589,49 +589,49 @@ const textInputs = [
     "radius-slider",
     state.radiusMax,
     () => state.radius,
-    (value) => (state.radius = value)
+    (value) => (state.radius = value),
   ),
   new TextInput(
     "value-P0x",
     null,
     state.canvasSize.x,
     () => state.controlPoints[0].x,
-    (value) => (state.controlPoints[0].x = value)
+    (value) => (state.controlPoints[0].x = value),
   ),
   new TextInput(
     "value-P0y",
     null,
     state.canvasSize.y,
     () => state.controlPoints[0].y,
-    (value) => (state.controlPoints[0].y = value)
+    (value) => (state.controlPoints[0].y = value),
   ),
   new TextInput(
     "value-P1x",
     null,
     state.canvasSize.x,
     () => state.controlPoints[1].x,
-    (value) => (state.controlPoints[1].x = value)
+    (value) => (state.controlPoints[1].x = value),
   ),
   new TextInput(
     "value-P1y",
     null,
     state.canvasSize.y,
     () => state.controlPoints[1].y,
-    (value) => (state.controlPoints[1].y = value)
+    (value) => (state.controlPoints[1].y = value),
   ),
   new TextInput(
     "value-P2x",
     null,
     state.canvasSize.x,
     () => state.controlPoints[2].x,
-    (value) => (state.controlPoints[2].x = value)
+    (value) => (state.controlPoints[2].x = value),
   ),
   new TextInput(
     "value-P2y",
     null,
     state.canvasSize.y,
     () => state.controlPoints[2].y,
-    (value) => (state.controlPoints[2].y = value)
+    (value) => (state.controlPoints[2].y = value),
   ),
 ];
 
@@ -650,7 +650,7 @@ canvas.height = state.canvasSize.y;
 /* 鼠标可以移动一个正在移动的点，悬停在未悬停的点上，
  * 穿过一个悬停的点，或在画布的其他部分移动 */
 canvas.addEventListener("mousemove", (evt) =>
-  doMouseMove(Math2D.point(evt.offsetX, evt.offsetY), (evt.buttons & 1) === 1)
+  doMouseMove(Math2D.point(evt.offsetX, evt.offsetY), (evt.buttons & 1) === 1),
 );
 
 /* 在悬停的点上按下左键，将其转换为移动的点 */
@@ -663,7 +663,7 @@ canvas.addEventListener("mousedown", (evt) => {
   const [pointHitIndex, testDelta] = hitTestPoints(
     Math2D.point(evt.offsetX, evt.offsetY),
     state.controlPoints,
-    state.hitDistance
+    state.hitDistance,
   );
   if (pointHitIndex < 0) {
     // 光标未悬停在任何点上
@@ -694,7 +694,7 @@ canvas.addEventListener("mouseup", (evt) => {
  * 如果在进入时左键按下，则继续移动；否则停止移动。
  * 可能还需要调整悬停状态 */
 canvas.addEventListener("mouseenter", (evt) =>
-  doMouseMove(Math2D.point(evt.offsetX, evt.offsetY), (evt.buttons & 1) === 1)
+  doMouseMove(Math2D.point(evt.offsetX, evt.offsetY), (evt.buttons & 1) === 1),
 );
 
 drawCanvas(); // 绘制初始画布

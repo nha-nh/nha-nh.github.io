@@ -15,6 +15,7 @@ import {
   NInputGroup,
   NInputGroupLabel,
   NInputNumber,
+  NScrollbar,
   NSelect,
   NSlider,
   NSwitch,
@@ -60,7 +61,7 @@ watch(
 
     generator();
   },
-  { immediate: true, deep: true }
+  { immediate: true, deep: true },
 );
 
 /** 下载 ‘图片查看器.exe’ */
@@ -72,110 +73,118 @@ function downloadImageViewer() {
 <template>
   <ResponsiveDirectionLayout :default-size="0.35" :min="0">
     <template #left>
-      <div class="config-panel">
-        <NCard title="文本占用网格计数" size="small">
-          <NInput :value="textOccupiedGridCount + ''" />
-        </NCard>
+      <NScrollbar style="max-height: 100%">
+        <div class="config-panel">
+          <NCard title="文本占用网格计数" size="small">
+            <NInput :value="textOccupiedGridCount + ''" />
+          </NCard>
 
-        <NCard title="文字样式" size="small">
-          <div class="config-panel">
-            <NInputGroup>
-              <NInputGroupLabel>文字</NInputGroupLabel>
-              <NInput v-model:value="config.text" clearable />
-            </NInputGroup>
-            <NInputGroup>
-              <NInputGroupLabel>文字大小</NInputGroupLabel>
-              <NInputNumber
-                v-model:value="fontStyle.fontSize"
-                :min="9"
-                :precision="0"
-              />
-              <NInputGroupLabel>px</NInputGroupLabel>
-            </NInputGroup>
-            <NInputGroup>
-              <NInputGroupLabel>文字粗细</NInputGroupLabel>
-              <NSelect
-                v-model:value="fontStyle.fontWeight"
-                :options="[
-                  { label: '正常', value: 'normal' },
-                  { label: '粗体', value: 'bold' },
-                ]"
-              />
-            </NInputGroup>
-            <NInputGroup>
-              <NInputGroupLabel>文字字体</NInputGroupLabel>
-              <NSelect
-                v-model:value="fontStyle.fontFamily"
-                :options="fontFamilyOptions"
-              />
-            </NInputGroup>
-            <FontFamily v-model:fontFamilyOptions="fontFamilyOptions" />
-            <NInputGroup>
-              <NInputGroupLabel>文字偏移</NInputGroupLabel>
-              <NInputNumber v-model:value="config.textOffset.x" :precision="0">
-                <template #prefix>X</template>
-                <template #suffix>px</template>
-              </NInputNumber>
-              <NInputNumber v-model:value="config.textOffset.y" :precision="0">
-                <template #prefix>Y</template>
-                <template #suffix>px</template>
-              </NInputNumber>
-            </NInputGroup>
-          </div>
-        </NCard>
+          <NCard title="文字样式" size="small">
+            <div class="config-panel">
+              <NInputGroup>
+                <NInputGroupLabel>文字</NInputGroupLabel>
+                <NInput v-model:value="config.text" clearable />
+              </NInputGroup>
+              <NInputGroup>
+                <NInputGroupLabel>文字大小</NInputGroupLabel>
+                <NInputNumber
+                  v-model:value="fontStyle.fontSize"
+                  :min="9"
+                  :precision="0"
+                />
+                <NInputGroupLabel>px</NInputGroupLabel>
+              </NInputGroup>
+              <NInputGroup>
+                <NInputGroupLabel>文字粗细</NInputGroupLabel>
+                <NSelect
+                  v-model:value="fontStyle.fontWeight"
+                  :options="[
+                    { label: '正常', value: 'normal' },
+                    { label: '粗体', value: 'bold' },
+                  ]"
+                />
+              </NInputGroup>
+              <NInputGroup>
+                <NInputGroupLabel>文字字体</NInputGroupLabel>
+                <NSelect
+                  v-model:value="fontStyle.fontFamily"
+                  :options="fontFamilyOptions"
+                />
+              </NInputGroup>
+              <FontFamily v-model:fontFamilyOptions="fontFamilyOptions" />
+              <NInputGroup>
+                <NInputGroupLabel>文字偏移</NInputGroupLabel>
+                <NInputNumber
+                  v-model:value="config.textOffset.x"
+                  :precision="0"
+                >
+                  <template #prefix>X</template>
+                  <template #suffix>px</template>
+                </NInputNumber>
+                <NInputNumber
+                  v-model:value="config.textOffset.y"
+                  :precision="0"
+                >
+                  <template #prefix>Y</template>
+                  <template #suffix>px</template>
+                </NInputNumber>
+              </NInputGroup>
+            </div>
+          </NCard>
 
-        <NCard title="网格" size="small">
-          <div class="config-panel">
-            <NInputGroup>
-              <NInputGroupLabel>网格行列数量</NInputGroupLabel>
-              <NInputNumber
-                v-model:value="config.gridCount"
-                :min="1"
-                :precision="0"
-              />
-            </NInputGroup>
-            <NInputGroup>
-              <NInputGroupLabel>字体颜色阈值比率</NInputGroupLabel>
-              <NSlider
-                v-model:value="config.fontColorThresholdRatio"
-                :min="0.01"
-                :max="0.49"
-                :step="0.01"
-              />
-            </NInputGroup>
+          <NCard title="网格" size="small">
+            <div class="config-panel">
+              <NInputGroup>
+                <NInputGroupLabel>网格行列数量</NInputGroupLabel>
+                <NInputNumber
+                  v-model:value="config.gridCount"
+                  :min="1"
+                  :precision="0"
+                />
+              </NInputGroup>
+              <NInputGroup>
+                <NInputGroupLabel>字体颜色阈值比率</NInputGroupLabel>
+                <NSlider
+                  v-model:value="config.fontColorThresholdRatio"
+                  :min="0.01"
+                  :max="0.49"
+                  :step="0.01"
+                />
+              </NInputGroup>
 
-            <NInputGroup>
-              <NInputGroupLabel>网格颜色统一化</NInputGroupLabel>
-              <NSwitch v-model:value="config.uniformization" />
-            </NInputGroup>
-          </div>
-        </NCard>
+              <NInputGroup>
+                <NInputGroupLabel>网格颜色统一化</NInputGroupLabel>
+                <NSwitch v-model:value="config.uniformization" />
+              </NInputGroup>
+            </div>
+          </NCard>
 
-        <NCard title="其他" size="small">
-          <div class="button-panel">
-            <NButton
-              type="success"
-              ghost
-              @click="gridTextGenerator.exportImage()"
-            >
-              <template #icon>
-                <NIcon :component="CloudDownloadOutline" />
-              </template>
-              导出图片
-            </NButton>
-
-            <NInputGroup>
-              <NButton type="info" ghost @click="downloadImageViewer">
+          <NCard title="其他" size="small">
+            <div class="button-panel">
+              <NButton
+                type="success"
+                ghost
+                @click="gridTextGenerator.exportImage()"
+              >
                 <template #icon>
                   <NIcon :component="CloudDownloadOutline" />
                 </template>
-                图片查看器.exe
+                导出图片
               </NButton>
-              <ImageViewerHelp />
-            </NInputGroup>
-          </div>
-        </NCard>
-      </div>
+
+              <NInputGroup>
+                <NButton type="info" ghost @click="downloadImageViewer">
+                  <template #icon>
+                    <NIcon :component="CloudDownloadOutline" />
+                  </template>
+                  图片查看器.exe
+                </NButton>
+                <ImageViewerHelp />
+              </NInputGroup>
+            </div>
+          </NCard>
+        </div>
+      </NScrollbar>
     </template>
     <template #right>
       <div class="canvas-container">

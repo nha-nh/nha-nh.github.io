@@ -44,8 +44,8 @@ const canvas: CustomRouteRecord = {
       enUS: "Canvas Drawing",
     },
     details: {
-      zhCN: "Canvas绘画工具集合：YOLO8标注、Threejs、GLSL、图片打散重组、网格文字生成等在线演示。",
-      enUS: "Canvas tools: YOLO8 annotator, Three.js, GLSL, image scatter/recombine, grid text.",
+      zhCN: "Canvas绘画工具集合：YOLO8标注、Threejs、GLSL、图片打散重组、网格文字生成、Bézier 曲线等在线演示。",
+      enUS: "Canvas tools: YOLO8 annotator, Three.js, GLSL, image scatter/recombine, grid text, Bézier curves.",
     },
   },
   children: [
@@ -138,6 +138,21 @@ const canvas: CustomRouteRecord = {
         },
       },
       component: () => import("@/views/canvas/GridTextGenerator/index.vue"),
+    },
+    {
+      path: "BezierCurve",
+      name: "BezierCurve",
+      meta: {
+        name: {
+          zhCN: "Bézier 曲线",
+          enUS: "Bézier Curve",
+        },
+        details: {
+          zhCN: "二次与三次 Bézier 曲线可视化：拖拽控制点、控制折线、t 处点与切线，便于理解参数曲线。",
+          enUS: "Quadratic and cubic Bézier visualization with draggable points, control net, point at t and tangent.",
+        },
+      },
+      component: () => import("@/views/canvas/BezierCurve/index.vue"),
     },
   ],
 };
