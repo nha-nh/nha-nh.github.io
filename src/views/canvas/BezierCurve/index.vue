@@ -13,6 +13,9 @@ import {
   NFlex,
   NDivider,
   NCode,
+  NUpload,
+  NUploadDragger,
+  type UploadFileInfo,
 } from "naive-ui";
 import {
   _Utility_GenerateUUID,
@@ -28,6 +31,7 @@ import {
   CopyOutline,
   PauseCircleOutline,
   PlayCircleOutline,
+  TrashOutline,
 } from "@vicons/ionicons5";
 
 let defaultCode = ``;
@@ -65,6 +69,51 @@ const nodes = [
       isDraggable: true,
     }),
 );
+
+const referenceImageOpacity = ref(1);
+const billboard = new _Canvas_Axis.Billboard({
+  value: [
+    [-4, -4],
+    [4, 4],
+  ],
+  isInteractive: false,
+  objectFit: "contain",
+  opacity: referenceImageOpacity.value,
+});
+billboard.url = "";
+
+const hasReferenceImage = ref(false);
+let refImageBlobUrl: string | null = null;
+function revokeRefImageBlob() {
+  if (refImageBlobUrl) {
+    URL.revokeObjectURL(refImageBlobUrl);
+    refImageBlobUrl = null;
+  }
+}
+function onRefImageFileList(list: UploadFileInfo[]) {
+  const raw = list[0]?.file;
+  if (!raw) return;
+  const file = raw as File;
+  if (!file.type.startsWith("image/")) {
+    window.$message.warning("请选择图片文件");
+    return;
+  }
+  revokeRefImageBlob();
+  refImageBlobUrl = URL.createObjectURL(file);
+  billboard.url = refImageBlobUrl;
+  hasReferenceImage.value = true;
+}
+function removeReferenceImage() {
+  revokeRefImageBlob();
+  billboard.url = "";
+  hasReferenceImage.value = false;
+}
+function onReferenceOpacityChange(v: number | null) {
+  if (v == null || Number.isNaN(v)) return;
+  const t = Math.min(1, Math.max(0, v));
+  referenceImageOpacity.value = t;
+  billboard.opacity = t;
+}
 
 /** 宽高比 */
 const aspectRatio = ref(1);
@@ -194,6 +243,7 @@ onMounted(() => {
     axisShow: { all: false },
     theme: Settings.value.theme,
   });
+  axis.addOverlay(billboard);
   axis.addOverlay(nodes);
   axis.addOverlay(auxiliaryLine);
   axis.addOverlay(curve);
@@ -203,6 +253,7 @@ onMounted(() => {
   window.addEventListener("keydown", keyDown);
 });
 onUnmounted(() => {
+  removeReferenceImage();
   oscillator.pause();
   axis.destroy();
   window.removeEventListener("keydown", keyDown);
@@ -257,6 +308,42 @@ onUnmounted(() => {
                 <NIcon :component="PlayCircleOutline" />
               </template>
               播放
+            </NButton>
+          </NFlex>
+        </NH2>
+        <NH2 prefix="bar">
+          <NFlex vertical :size="20">
+            <NText type="success" strong>添加参考图</NText>
+            <NText depth="3" style="font-size: 12px">参考图透明度</NText>
+            <NSlider
+              :value="referenceImageOpacity"
+              :min="0"
+              :max="1"
+              :step="0.01"
+              :disabled="!hasReferenceImage"
+              @update:value="onReferenceOpacityChange"
+            />
+            <NUpload
+              :max="1"
+              accept="image/*"
+              :file-list="[]"
+              @update:file-list="onRefImageFileList"
+            >
+              <NUploadDragger style="width: 100%">
+                点击或拖拽图片到此处
+              </NUploadDragger>
+            </NUpload>
+            <NButton
+              type="error"
+              ghost
+              style="width: 100%"
+              :disabled="!hasReferenceImage"
+              @click="removeReferenceImage"
+            >
+              <template #icon>
+                <NIcon :component="TrashOutline" />
+              </template>
+              删除参考图
             </NButton>
           </NFlex>
         </NH2>
