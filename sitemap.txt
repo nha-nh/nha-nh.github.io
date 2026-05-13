@@ -4,6 +4,7 @@ https://nha-nh.github.io/canvas/Threejs/
 https://nha-nh.github.io/canvas/GLSL/
 https://nha-nh.github.io/canvas/ImageScatterRecombine/
 https://nha-nh.github.io/canvas/GridTextGenerator/
+https://nha-nh.github.io/canvas/BezierCurve/
 https://nha-nh.github.io/math/DynamicDiagram/
 https://nha-nh.github.io/multimedia/TakeFlow/
 https://nha-nh.github.io/multimedia/AudioPlayer/
