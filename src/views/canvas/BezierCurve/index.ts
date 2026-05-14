@@ -13,9 +13,14 @@ type Config = {
 export default function BezierCurve(config: Config) {
   const { nodes, progress, precision } = config;
   const curveNodes: [number, number][] = [];
-  for (let i = 0; i <= progress; i += precision) {
+  for (let i = 0; i <= progress; ) {
     const node = _Math_GetBezierCurveNodes(nodes, i);
     curveNodes.push(node);
+    if (i < progress) {
+      i += precision;
+      if (i > progress) i = progress;
+    } else break;
   }
+
   return curveNodes;
 }

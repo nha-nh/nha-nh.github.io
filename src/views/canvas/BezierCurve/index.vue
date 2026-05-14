@@ -4,7 +4,6 @@ import { Settings } from "@/components/popups/components/Settings";
 import {
   NAlert,
   NButton,
-  NInputNumber,
   NScrollbar,
   NSlider,
   NText,
@@ -27,6 +26,7 @@ import {
 } from "nhanh-pure-function";
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import BezierCurve from ".";
+import CrosshairIndicator from "../../../components/singleFile/CrosshairIndicator.vue";
 import {
   CopyOutline,
   PauseCircleOutline,
@@ -73,8 +73,8 @@ const nodes = [
 const referenceImageOpacity = ref(1);
 const billboard = new _Canvas_Axis.Billboard({
   value: [
-    [-4, -4],
-    [4, 4],
+    [-5, -5],
+    [5, 5],
   ],
   isInteractive: false,
   objectFit: "contain",
@@ -158,8 +158,19 @@ const auxiliaryLine = new _Canvas_Axis.Line({
   style: { stroke: { color: "#555", dash: true } },
   isInteractive: false,
 });
+/** 曲线透明度 */
+const curveOpacity = ref(1);
 /** 曲线 */
-const curve = new _Canvas_Axis.Line({ isInteractive: false });
+const curve = new _Canvas_Axis.Line({
+  isInteractive: false,
+  opacity: curveOpacity.value,
+});
+function onCurveOpacityChange(v: number | null) {
+  if (v == null || Number.isNaN(v)) return;
+  const t = Math.min(1, Math.max(0, v));
+  curveOpacity.value = t;
+  curve.opacity = t;
+}
 function updateCurve() {
   curve.value = BezierCurve({
     nodes: nodes.map((node) => node.value!),
@@ -265,25 +276,23 @@ onUnmounted(() => {
     <template #left>
       <NScrollbar style="max-height: 100%">
         <NH2 prefix="bar">
-          <NFlex vertical :size="20">
-            <NText type="success" strong>曲线绘制进度</NText>
+          <NText type="success" strong>曲线绘制</NText>
+          <NFlex vertical :size="10">
             <NSlider
               :value="progress"
               :min="0"
               :max="1"
               :step="precision"
+              :marks="{ 0: '始', 1: '末' }"
               @update:value="onProgressChange"
             />
-            <NInputNumber
-              :value="progress"
+            <NSlider
+              :value="curveOpacity"
               :min="0"
               :max="1"
-              :step="precision"
-              :precision="3"
-              :show-button="false"
-              placeholder="0 ~ 1"
-              style="width: 100%"
-              @update:value="onProgressChange"
+              :step="0.01"
+              :marks="{ 0: '透明', 1: '不透明' }"
+              @update:value="onCurveOpacityChange"
             />
             <NButton
               v-if="isPlaying"
@@ -312,15 +321,15 @@ onUnmounted(() => {
           </NFlex>
         </NH2>
         <NH2 prefix="bar">
-          <NFlex vertical :size="20">
-            <NText type="success" strong>添加参考图</NText>
-            <NText depth="3" style="font-size: 12px">参考图透明度</NText>
+          <NText type="success" strong>参考图</NText>
+          <NFlex vertical :size="10">
             <NSlider
               :value="referenceImageOpacity"
               :min="0"
               :max="1"
               :step="0.01"
               :disabled="!hasReferenceImage"
+              :marks="{ 0: '透明', 1: '不透明' }"
               @update:value="onReferenceOpacityChange"
             />
             <NUpload
@@ -368,17 +377,19 @@ onUnmounted(() => {
               复制示例
             </NButton>
             <NScrollbar style="max-height: calc(100vh - 450px)">
-              <NCode language="javascript" :code="demoCode" />
+              <NCode language="javascript" :code="demoCode" word-wrap />
             </NScrollbar>
           </NFlex>
         </NH2>
       </NScrollbar>
     </template>
     <template #right>
-      <div class="alert-container">
+      <div class="container">
         <NAlert title="贝塞尔曲线" type="info" closable>
           <p>
-            先在画布上<strong>点击一个控制点</strong>，再使用以下快捷键（对「当前选中点」生效）：
+            部分功能需要先在画布上
+            <strong>点击一个控制点</strong>
+            ，再使用以下快捷键（对「当前选中点」生效）：
           </p>
           <ul style="margin: 0.5em 0 0 1.25em; padding: 0">
             <li>
@@ -390,25 +401,41 @@ onUnmounted(() => {
               <NText code>Tab</NText>
               ：在该点与相邻一侧的控制点<strong>连线的中点</strong>插入新点（有后邻则插在后邻前，否则插在前邻后）。
             </li>
+            <li><NText code>alt</NText> + 鼠标移动：显示辅助线。</li>
           </ul>
         </NAlert>
-        <canvas :id="id" />
+        <CrosshairIndicator modifier-key="alt">
+          <canvas :id="id" />
+        </CrosshairIndicator>
       </div>
     </template>
   </ResponsiveDirectionLayout>
 </template>
 
 <style scoped lang="less">
-.alert-container {
+.n-flex {
+  padding: 0 20px;
+  .n-slider {
+    font-size: 14px;
+  }
+  .n-upload-dragger {
+    font-size: 14px;
+  }
+}
+
+.container {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  canvas {
-    width: 100%;
+  .crosshair-indicator {
     height: 0;
     flex: 1;
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 </style>
