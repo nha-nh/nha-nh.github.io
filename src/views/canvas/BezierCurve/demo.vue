@@ -30,7 +30,7 @@ onUnmounted(() => {
     :style="{
       '--x': x + '%',
       '--y': y + '%',
-      '--aspect-ratio': aspectRatio + ' / 1',
+      'aspect-ratio': aspectRatio + ' / 1',
     }"
   ></div>
 </template>
