@@ -23,6 +23,8 @@ import {
   _Animate_CreateOscillator,
   _Tip,
   _Browser_CopyToClipboard,
+  _Utility_UndoRedoHistory,
+  _Utility_Clone,
 } from "nhanh-pure-function";
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import BezierCurve from ".";
@@ -69,6 +71,13 @@ const nodes = [
       isDraggable: true,
     }),
 );
+function getNodesValue() {
+  return nodes.map((node) => node.value!);
+}
+const undoRedoHistory = new _Utility_UndoRedoHistory({
+  clone: _Utility_Clone,
+  initialState: getNodesValue(),
+});
 
 const referenceImageOpacity = ref(1);
 const billboard = new _Canvas_Axis.Billboard({
@@ -173,18 +182,53 @@ function onCurveOpacityChange(v: number | null) {
 }
 function updateCurve() {
   curve.value = BezierCurve({
-    nodes: nodes.map((node) => node.value!),
+    nodes: getNodesValue(),
     progress: progress.value,
     precision,
   });
 }
 function updateLine() {
-  auxiliaryLine.value = nodes.map((node) => node.value!);
+  auxiliaryLine.value = getNodesValue();
   updateAspectRatio();
   updateCurve();
 }
-updateLine();
-nodes.forEach((node) => node.addEventListener("drag", updateLine));
+
+/** 新的拖拽事件 */
+let newDragEvent = false;
+let isDragging = true;
+undoRedoHistory.subscribe((_current) => {
+  const current = _Utility_Clone(_current);
+
+  if (!isDragging && current) {
+    nodes.splice(current.length).forEach((node) => node.remove());
+
+    for (let i = 0; i < current.length; i++) {
+      if (nodes[i]) {
+        nodes[i].value = current[i];
+      } else {
+        const node = new _Canvas_Axis.Point({
+          value: current[i],
+          isDraggable: true,
+        });
+        node.addEventListener("drag", nodeDrag);
+        nodes.push(node);
+        axis.addOverlay(node);
+      }
+    }
+  }
+  isDragging = false;
+  updateLine();
+});
+function nodeDrag() {
+  isDragging = true;
+  if (newDragEvent) {
+    newDragEvent = false;
+    undoRedoHistory.push(getNodesValue());
+  } else {
+    undoRedoHistory.replace(getNodesValue());
+  }
+}
+nodes.forEach((node) => node.addEventListener("drag", nodeDrag));
 
 const isPlaying = ref(false);
 function onProgressChange(v: number | null) {
@@ -209,15 +253,27 @@ function pause() {
 let lastDownOverlay: (typeof nodes)[number] | undefined;
 /** Delete / Backspace：删当前点（至少 2 个点）；Tab：在当前点与邻点中点处插入新点 */
 function keyDown(event: KeyboardEvent) {
+  if (oscillator.isPlaying()) return;
+
+  const { ctrlKey, altKey, shiftKey, metaKey } = event;
   const key = event.key;
-  const node = lastDownOverlay;
-
-  if (!node || oscillator.isPlaying()) return;
-
   function finish() {
     updateLine();
     event.preventDefault();
   }
+
+  if (ctrlKey && key == "z") {
+    if (!undoRedoHistory.canUndo)
+      return window.$message.warning("没有更多撤销记录");
+    return undoRedoHistory.undo();
+  } else if (ctrlKey && key == "y") {
+    if (!undoRedoHistory.canRedo)
+      return window.$message.warning("没有更多重做记录");
+    return undoRedoHistory.redo();
+  }
+
+  const node = lastDownOverlay;
+  if (!node) return;
 
   if (["Backspace", "Delete"].includes(key)) {
     if (nodes.length <= 2) return window.$message.warning("至少需要2个点");
@@ -240,7 +296,7 @@ function keyDown(event: KeyboardEvent) {
       value: [x, y],
       isDraggable: true,
     });
-    newNode.addEventListener("drag", updateLine);
+    newNode.addEventListener("drag", nodeDrag);
     axis.addOverlay(newNode);
     if (nextNodeExists) nodes.splice(index + 1, 0, newNode);
     else nodes.splice(index, 0, newNode);
@@ -259,6 +315,7 @@ onMounted(() => {
   axis.addOverlay(auxiliaryLine);
   axis.addOverlay(curve);
   axis.addEventListener("down", () => {
+    newDragEvent = true;
     if (axis.lastDownOverlay) lastDownOverlay = axis.lastDownOverlay as any;
   });
   window.addEventListener("keydown", keyDown);
@@ -402,6 +459,13 @@ onUnmounted(() => {
               ：在该点与相邻一侧的控制点<strong>连线的中点</strong>插入新点（有后邻则插在后邻前，否则插在前邻后）。
             </li>
             <li><NText code>alt</NText> + 鼠标移动：显示辅助线。</li>
+            <li>
+              <NText code>ctrl</NText> + <NText code>z</NText>：撤销；<NText
+                code
+                >ctrl</NText
+              >
+              + <NText code>y</NText>：重做。
+            </li>
           </ul>
         </NAlert>
         <CrosshairIndicator modifier-key="alt">
