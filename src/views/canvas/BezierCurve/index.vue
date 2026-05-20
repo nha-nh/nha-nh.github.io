@@ -25,6 +25,7 @@ import {
   _Browser_CopyToClipboard,
   _Utility_UndoRedoHistory,
   _Utility_Clone,
+  _Utility_ShortcutManager,
 } from "nhanh-pure-function";
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import BezierCurve from ".";
@@ -251,37 +252,42 @@ function pause() {
 
 /** 最近一次在坐标轴上按下的覆盖层（控制点）；快捷键仅对该点生效 */
 let lastDownOverlay: (typeof nodes)[number] | undefined;
-/** Delete / Backspace：删当前点（至少 2 个点）；Tab：在当前点与邻点中点处插入新点 */
-function keyDown(event: KeyboardEvent) {
-  if (oscillator.isPlaying()) return;
-
-  const { ctrlKey, altKey, shiftKey, metaKey } = event;
-  const key = event.key;
-  function finish() {
-    updateLine();
-    event.preventDefault();
-  }
-
-  if (ctrlKey && key == "z") {
+const shortcutKey = new _Utility_ShortcutManager();
+shortcutKey.bind("ctrl+z", {
+  callback: () => {
+    if (oscillator.isPlaying()) return;
     if (!undoRedoHistory.canUndo)
       return window.$message.warning("没有更多撤销记录");
     return undoRedoHistory.undo();
-  } else if (ctrlKey && key == "y") {
+  },
+  scope: "#" + id,
+});
+shortcutKey.bind("ctrl+y", {
+  callback: () => {
+    if (oscillator.isPlaying()) return;
     if (!undoRedoHistory.canRedo)
       return window.$message.warning("没有更多重做记录");
     return undoRedoHistory.redo();
-  }
-
-  const node = lastDownOverlay;
-  if (!node) return;
-
-  if (["Backspace", "Delete"].includes(key)) {
+  },
+  scope: "#" + id,
+});
+shortcutKey.bind(["Backspace", "Delete"], {
+  callback: () => {
+    const node = lastDownOverlay;
+    if (!node) return;
     if (nodes.length <= 2) return window.$message.warning("至少需要2个点");
     node.remove();
     nodes.splice(nodes.indexOf(node as any), 1);
+    undoRedoHistory.push(getNodesValue());
     lastDownOverlay = undefined;
-    finish();
-  } else if (key === "Tab") {
+    updateLine();
+  },
+  scope: "#" + id,
+});
+shortcutKey.bind("Tab", {
+  callback: () => {
+    const node = lastDownOverlay;
+    if (!node) return;
     const index = nodes.indexOf(node as any);
     // 优先与后一点取中点并插在其前；若无后一点则与前一点取中点并插在当前点前
     const nextNodeExists = !!nodes[index + 1];
@@ -300,9 +306,11 @@ function keyDown(event: KeyboardEvent) {
     axis.addOverlay(newNode);
     if (nextNodeExists) nodes.splice(index + 1, 0, newNode);
     else nodes.splice(index, 0, newNode);
-    finish();
-  }
-}
+    undoRedoHistory.push(getNodesValue());
+    updateLine();
+  },
+  scope: "#" + id,
+});
 
 onMounted(() => {
   axis = new _Canvas_Axis({
@@ -318,13 +326,12 @@ onMounted(() => {
     newDragEvent = true;
     if (axis.lastDownOverlay) lastDownOverlay = axis.lastDownOverlay as any;
   });
-  window.addEventListener("keydown", keyDown);
 });
 onUnmounted(() => {
   removeReferenceImage();
   oscillator.pause();
   axis.destroy();
-  window.removeEventListener("keydown", keyDown);
+  shortcutKey.destroy();
 });
 </script>
 
@@ -450,15 +457,14 @@ onUnmounted(() => {
           </p>
           <ul style="margin: 0.5em 0 0 1.25em; padding: 0">
             <li>
+              <NText code>Tab</NText>
+              ：在该点与相邻一侧的控制点<strong>连线的中点</strong>插入新点（有后邻则插在后邻前，否则插在前邻后）。
+            </li>
+            <li>
               <NText code>Delete</NText> /
               <NText code>Backspace</NText>：删除该点；至少保留
               <strong>2</strong> 个控制点。
             </li>
-            <li>
-              <NText code>Tab</NText>
-              ：在该点与相邻一侧的控制点<strong>连线的中点</strong>插入新点（有后邻则插在后邻前，否则插在前邻后）。
-            </li>
-            <li><NText code>alt</NText> + 鼠标移动：显示辅助线。</li>
             <li>
               <NText code>ctrl</NText> + <NText code>z</NText>：撤销；<NText
                 code
@@ -466,6 +472,7 @@ onUnmounted(() => {
               >
               + <NText code>y</NText>：重做。
             </li>
+            <li><NText code>alt</NText> + 鼠标移动：显示辅助线。</li>
           </ul>
         </NAlert>
         <CrosshairIndicator modifier-key="alt">
