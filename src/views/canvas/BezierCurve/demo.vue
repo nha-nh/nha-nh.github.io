@@ -28,9 +28,9 @@ onUnmounted(() => {
 <template>
   <div
     :style="{
-      '--x': x + '%',
-      '--y': y + '%',
-      'aspect-ratio': aspectRatio + ' / 1',
+      '--x': x,
+      '--y': y,
+      'aspect-ratio': aspectRatio,
     }"
   ></div>
 </template>
@@ -40,6 +40,8 @@ div {
   width: 400px;
   background-color: #eee;
   position: relative;
+  container-type: size;
+
   &::after {
     content: "";
     display: block;
@@ -47,10 +49,12 @@ div {
     height: 10px;
     background-color: #000;
     border-radius: 50%;
-    position: absolute;
-    top: var(--y);
-    left: var(--x);
-    transform: translate(-50%, -50%);
+    transform: translate3d(
+      calc(var(--x) * 1cqw - 50%),
+      calc(var(--y) * 1cqh - 50%),
+      0
+    );
+    will-change: transform;
   }
 }
 </style>
