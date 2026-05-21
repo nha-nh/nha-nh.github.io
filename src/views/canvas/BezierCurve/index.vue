@@ -36,6 +36,7 @@ import {
   PlayCircleOutline,
   TrashOutline,
 } from "@vicons/ionicons5";
+import Test from "./test.vue";
 
 let defaultCode = ``;
 const codeModules = import.meta.glob("./demo.vue", {
@@ -311,6 +312,10 @@ shortcutKey.bind("Tab", {
   },
   scope: "#" + id,
 });
+shortcutKey.bind("g", {
+  callback: () => axis?.toggleAxis(),
+  scope: "#" + id,
+});
 
 onMounted(() => {
   axis = new _Canvas_Axis({
@@ -421,6 +426,7 @@ onUnmounted(() => {
           </NFlex>
         </NH2>
         <NDivider />
+        <!-- <Test /> -->
         <NH2 prefix="bar" type="info">
           <NFlex vertical :size="20">
             <NButton
@@ -473,6 +479,7 @@ onUnmounted(() => {
               + <NText code>y</NText>：重做。
             </li>
             <li><NText code>alt</NText> + 鼠标移动：显示辅助线。</li>
+            <li><NText code>g</NText>：显示/隐藏坐标轴。</li>
           </ul>
         </NAlert>
         <CrosshairIndicator modifier-key="alt">

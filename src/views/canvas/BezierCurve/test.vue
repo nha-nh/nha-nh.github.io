@@ -5,8 +5,18 @@ import {
 } from "nhanh-pure-function";
 import { onMounted, onUnmounted, ref } from "vue";
 
-const nodes: [number, number][] = [];
-const aspectRatio = 1;
+const nodes: [number, number][] = [
+  [0.4769, 0.263],
+  [0.8508, 0],
+  [0.71, 0.4616],
+  [1, 0.4762],
+  [0.5277, 1],
+  [0, 0.4866],
+  [0.2438, 0.4776],
+  [0.1185, 0.0097],
+  [0.48, 0.263],
+];
+const aspectRatio = 0.9687;
 
 const x = ref(0);
 const y = ref(0);
