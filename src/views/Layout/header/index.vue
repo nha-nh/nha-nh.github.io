@@ -8,6 +8,7 @@ import { showMenu } from "../body";
 import { MenuOutline } from "@vicons/ionicons5";
 import router from "@/router";
 import Counter from "./counter.vue";
+import { togglePlayback } from "./music";
 
 const show = ref(false);
 
@@ -23,6 +24,7 @@ window.addEventListener("click", (ev) => {
     }
   }
 });
+window.addEventListener("click", togglePlayback, { once: true });
 </script>
 
 <template>

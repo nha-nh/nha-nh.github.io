@@ -20,9 +20,10 @@ import {
   _Element_IsFullscreen,
 } from "nhanh-pure-function";
 import { ref } from "vue";
-import WeatherInfo from "./weatherInfo/index.vue";
+// import WeatherInfo from "./weatherInfo/index.vue";
 import Media from "@/stores/media";
 import Counter from "./counter.vue";
+import Music from "./music.vue";
 
 /** 切换语言 */
 function ChangeLanguage() {
@@ -68,6 +69,7 @@ _Element_FullscreenObserver((isFull) => (isFullScreen.value = isFull));
       <!-- <WeatherInfo /> -->
     </template>
 
+    <Music />
     <NButton title="全屏切换" quaternary @click="toggleFullScreen">
       <template #icon>
         <NIcon :component="isFullScreen ? Contract : Expand" />
