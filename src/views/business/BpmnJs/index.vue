@@ -3,11 +3,16 @@ import { onBeforeUnmount, onMounted, shallowRef } from "vue";
 import { _Utility_GenerateUUID } from "nhanh-pure-function";
 import BpmnJs from "./index";
 import DiagramToolbar from "./convenient/DiagramToolbar.vue";
+import HandleFileDrag from "@/components/singleFile/HandleFileDrag.vue";
 
 const id = _Utility_GenerateUUID("bpmn-js-");
 const propertiesPanelId = _Utility_GenerateUUID("bpmn-properties-");
 const bpmnJs = shallowRef<BpmnJs | null>(null);
 
+function handleDrop(files: File[]) {
+  if (files.length === 0) return;
+  bpmnJs.value?.importXML(files[0]);
+}
 onMounted(() => {
   bpmnJs.value = new BpmnJs(id, undefined, propertiesPanelId);
 });
@@ -19,12 +24,16 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="bpmn-wrap">
+  <HandleFileDrag
+    :accept="'.xml,.bpmn,text/xml,application/xml'"
+    @drop-callback="handleDrop"
+    class="bpmn-wrap"
+  >
     <div :id="id" class="bpmn-box">
       <DiagramToolbar :bpmn-js="bpmnJs" />
     </div>
     <div :id="propertiesPanelId" class="bpmn-properties"></div>
-  </div>
+  </HandleFileDrag>
 </template>
 
 <style scoped lang="less">

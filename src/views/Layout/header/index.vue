@@ -8,7 +8,7 @@ import { showMenu } from "../body";
 import { MenuOutline } from "@vicons/ionicons5";
 import router from "@/router";
 import Counter from "./counter.vue";
-import { togglePlayback } from "./music";
+import Music from "./music.vue";
 
 const show = ref(false);
 
@@ -24,14 +24,13 @@ window.addEventListener("click", (ev) => {
     }
   }
 });
-window.addEventListener("click", togglePlayback, { once: true });
 </script>
 
 <template>
   <header>
     <div @click="router.push('/')" class="name">
       <img src="/nhanh.ico" alt="" />
-      你好啊你好
+      <Music />
     </div>
     <NSpace v-if="Media.isMobileStyle">
       <Counter />
@@ -68,8 +67,6 @@ header {
   .name {
     display: flex;
     align-items: center;
-    font-size: 18px;
-    color: var(--text-color);
     cursor: pointer;
     img {
       width: 40px;

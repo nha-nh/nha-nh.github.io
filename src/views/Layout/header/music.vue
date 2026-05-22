@@ -1,23 +1,110 @@
 <script setup lang="ts">
 import { MusicalNotesOutline } from "@vicons/ionicons5";
 import { NButton, NIcon } from "naive-ui";
-import { isPlaying, togglePlayback } from "./music";
+import { ref } from "vue";
+
+/**
+ * 音频播放控制器
+ * 封装类，处理渐强/渐弱逻辑。
+ */
+class AudioFader {
+  private audio: HTMLAudioElement;
+  private maxVolume: number;
+  private intervalId: number | null = null;
+  private isFading: boolean = false;
+
+  constructor(src: string, maxVolume: number = 0.5) {
+    this.audio = new Audio(src);
+    this.audio.loop = true;
+    this.audio.volume = 0;
+    this.maxVolume = maxVolume;
+  }
+
+  public play(): void {
+    if (this.isFading) this.clearFade();
+    if (this.audio.paused) {
+      this.audio.volume = 0;
+      this.audio.play().catch(console.error);
+    }
+    this.startFade(true);
+  }
+
+  public pause(): void {
+    if (this.isFading) this.clearFade();
+    this.startFade(false);
+  }
+
+  private startFade(fadeIn: boolean): void {
+    this.isFading = true;
+    const step = 0.025;
+    const interval = 50;
+
+    this.intervalId = window.setInterval(() => {
+      if (fadeIn) {
+        if (this.audio.volume + step >= this.maxVolume) {
+          this.audio.volume = this.maxVolume;
+          this.clearFade();
+        } else {
+          this.audio.volume += step;
+        }
+      } else {
+        if (this.audio.volume - step <= 0) {
+          this.audio.volume = 0;
+          this.audio.pause();
+          this.clearFade();
+        } else {
+          this.audio.volume -= step;
+        }
+      }
+    }, interval);
+  }
+
+  private clearFade(): void {
+    if (this.intervalId !== null) {
+      window.clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+    this.isFading = false;
+  }
+}
+const fader = new AudioFader("/public/multimedia/Human Music.mp3", 0.5);
+
+const isPlaying = ref(false);
+
+function togglePlayback() {
+  isPlaying.value = !isPlaying.value;
+  if (isPlaying.value) {
+    fader.play();
+  } else {
+    fader.pause();
+  }
+}
+
+window.addEventListener("click", togglePlayback, { once: true });
 </script>
 
 <template>
   <NButton
-    title="人类之歌"
+    title="Human Music"
     :type="isPlaying ? 'success' : 'default'"
-    quaternary
+    icon-placement="right"
+    text
     @click.stop="togglePlayback"
   >
     <template #icon>
       <NIcon :component="MusicalNotesOutline" />
     </template>
+    你好啊你好
   </NButton>
 </template>
 
 <style scoped lang="less">
+.n-button {
+  :deep(.n-button__content) {
+    font-size: 18px;
+    color: var(--text-color);
+  }
+}
 .n-button--success-type {
   position: relative;
 
@@ -27,7 +114,7 @@ import { isPlaying, togglePlayback } from "./music";
     position: absolute;
     // 起始点定在按钮图标的右上方附近
     top: 5px;
-    right: 5px;
+    right: -8px;
     color: #18a058;
     font-size: 14px;
     pointer-events: none;

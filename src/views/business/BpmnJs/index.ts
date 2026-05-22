@@ -70,6 +70,23 @@ class Base {
 }
 
 class BpmnJs extends Base {
+  async importXML(file: File) {
+    const modeler = this.modeler;
+    if (!modeler) return;
+
+    const isXML = file.type.includes("xml") || file.type.includes("bpmn");
+    if (!isXML) throw new Error("所选文件类型不支持");
+
+    try {
+      const xml = await file.text();
+      if (!xml) throw new Error("所选文件内容为空");
+      await modeler.importXML(xml);
+      this.canvas?.zoom("fit-viewport");
+    } catch (e) {
+      console.error("导入 XML 失败:", e);
+      window.alert("导入失败，请检查文件是否为有效 BPMN/XML");
+    }
+  }
   pickImportXml() {
     const modeler = this.modeler;
     if (!modeler) return;
@@ -79,17 +96,8 @@ class BpmnJs extends Base {
     input.onchange = async () => {
       const file = input.files?.[0];
       if (!file) return;
-      try {
-        const xml = await file.text();
-        if (!xml) throw new Error("所选文件内容为空");
-        await modeler.importXML(xml);
-        this.canvas?.zoom("fit-viewport");
-      } catch (e) {
-        console.error("导入 XML 失败:", e);
-        window.alert("导入失败，请检查文件是否为有效 BPMN/XML");
-      } finally {
-        input.value = "";
-      }
+      await this.importXML(file);
+      input.value = "";
     };
     input.click();
   }

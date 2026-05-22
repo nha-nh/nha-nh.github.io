@@ -85,7 +85,7 @@ const fileListChange = _Utility_Debounce(
       setActiveUploadFile(0);
     }
   },
-  200
+  200,
 );
 watch(fileList, fileListChange);
 const initAudio = _Utility_Debounce(() => {
@@ -122,7 +122,7 @@ const initAudio = _Utility_Debounce(() => {
     });
     targetAudioConfig.value!.currentTime = FormatTime(0);
     targetAudioConfig.value!.totalDuration = FormatTime(
-      Number(audioVisualization.totalDuration)
+      Number(audioVisualization.totalDuration),
     );
   });
 }, 200);
@@ -135,7 +135,7 @@ watch(
       audioVisualization.setChannelVolume(index, volume);
     });
   },
-  { deep: true }
+  { deep: true },
 );
 const lfeMixChange = _Utility_Debounce((newLfeMix: LfeMix) => {
   if (targetAudioConfig.value) {
@@ -154,7 +154,7 @@ watch(lfeMix, lfeMixChange, { deep: true });
 function getActivationFileIndex() {
   const files = document.querySelectorAll(`#${fileListId} .n-upload-file`);
   const index = Array.from(files).findIndex((v) =>
-    v.classList.contains("active")
+    v.classList.contains("active"),
   );
   return index != -1 ? index : undefined;
 }
@@ -279,7 +279,7 @@ async function loadExample() {
             file,
           });
         });
-    }
+    },
   );
 
   await Promise.allSettled(promises);
@@ -398,7 +398,7 @@ async function setActiveUploadFile(index: number, forceParse = false) {
         div("Web Audio API 不支持大于 6 声道的自动下混。"),
         div("仅会保留 1、2 声道，建议启用 LFE 混合。"),
       ],
-      { closable: true, duration: 20000 }
+      { closable: true, duration: 20000 },
     );
   }
 
@@ -440,7 +440,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <HandleFileDrag @drop-callback="handleDrop">
+  <HandleFileDrag :accept="accept" @drop-callback="handleDrop">
     <ResponsiveDirectionLayout :default-size="0.35" :min="0">
       <template #left>
         <NScrollbar>
@@ -536,7 +536,7 @@ onUnmounted(() => {
                 <NInputGroup
                   v-for="(_, index) in channelVolume.slice(
                     0,
-                    options.channelCount || 0
+                    options.channelCount || 0,
                   )"
                   :key="index"
                 >
