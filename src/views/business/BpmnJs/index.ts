@@ -18,7 +18,7 @@ import customTranslateModule from "./translate-zh";
 import colorPickerConfig from "./color-picker-config";
 import customPropertiesModule from "./properties";
 import type Canvas from "diagram-js/lib/core/Canvas";
-import { _File_Download } from "nhanh-pure-function";
+import { _File_Download, _File_Select } from "nhanh-pure-function";
 
 /**
  * 参考
@@ -26,6 +26,17 @@ import { _File_Download } from "nhanh-pure-function";
  * https://github.com/bpmn-io/bpmn-js-examples/blob/main/properties-panel-list-extension/README.md
  * https://demo.bpmn.io/s/start
  */
+
+/** 与文件选择、拖拽区 accept 保持一致 */
+export const BPMN_XML_ACCEPT = ".xml,.bpmn,text/xml,application/xml";
+
+function isBpmnXmlFile(file: File): boolean {
+  const mime = file.type.toLowerCase();
+  if (mime.includes("xml") || mime.includes("bpmn")) return true;
+
+  const name = file.name.toLowerCase();
+  return name.endsWith(".xml") || name.endsWith(".bpmn");
+}
 
 class Base {
   protected modeler: BpmnModeler | null = null;
@@ -74,8 +85,7 @@ class BpmnJs extends Base {
     const modeler = this.modeler;
     if (!modeler) return;
 
-    const isXML = file.type.includes("xml") || file.type.includes("bpmn");
-    if (!isXML) throw new Error("所选文件类型不支持");
+    if (!isBpmnXmlFile(file)) throw new Error("所选文件类型不支持");
 
     try {
       const xml = await file.text();
@@ -87,19 +97,13 @@ class BpmnJs extends Base {
       window.alert("导入失败，请检查文件是否为有效 BPMN/XML");
     }
   }
-  pickImportXml() {
+  async pickImportXml() {
     const modeler = this.modeler;
     if (!modeler) return;
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = ".xml,.bpmn,text/xml,application/xml";
-    input.onchange = async () => {
-      const file = input.files?.[0];
-      if (!file) return;
-      await this.importXML(file);
-      input.value = "";
-    };
-    input.click();
+
+    const files = await _File_Select({ accept: BPMN_XML_ACCEPT });
+    if (files.length === 0) return;
+    this.importXML(files[0]);
   }
 
   async createNewDiagram() {

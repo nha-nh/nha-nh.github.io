@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, shallowRef } from "vue";
 import { _Utility_GenerateUUID } from "nhanh-pure-function";
-import BpmnJs from "./index";
+import BpmnJs, { BPMN_XML_ACCEPT } from "./index";
 import DiagramToolbar from "./convenient/DiagramToolbar.vue";
 import HandleFileDrag from "@/components/singleFile/HandleFileDrag.vue";
 
@@ -25,7 +25,7 @@ onBeforeUnmount(() => {
 
 <template>
   <HandleFileDrag
-    :accept="'.xml,.bpmn,text/xml,application/xml'"
+    :accept="BPMN_XML_ACCEPT"
     @drop-callback="handleDrop"
     class="bpmn-wrap"
   >
