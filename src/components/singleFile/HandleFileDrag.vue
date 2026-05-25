@@ -45,7 +45,7 @@ onUnmounted(() => {
       '--color':
         configProviderPropsRef.theme?.common?.successColor || '#63e2b7',
     }"
-    :drag-tip="`请将文件拖拽至此：${accept}`"
+    :drag-tip="`${accept}\n请将文件拖拽至此`"
   >
     <slot />
   </div>
@@ -67,12 +67,13 @@ onUnmounted(() => {
     pointer-events: none;
     z-index: 99;
 
-    background-color: color-mix(in srgb, var(--color) 20%, transparent);
+    background-color: color-mix(in srgb, var(--color) 20%, #ffffffb3);
     border: 2px dashed var(--color);
     border-radius: 4px;
     font-size: 30px;
     color: var(--color);
-    text-decoration: wavy underline;
+    white-space: pre-line;
+    text-align: center;
   }
 }
 </style>
