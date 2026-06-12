@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { _Utility_GenerateUUID } from "nhanh-pure-function";
+import main from ".";
 
 const id = _Utility_GenerateUUID("webgl-");
+
+requestAnimationFrame(() => {
+  main(id);
+});
 </script>
 
 <template>
