@@ -5,7 +5,7 @@ type InitConfig = Exclude<
   undefined
 >;
 
-class GridTextGenerator {
+export class GridTextGenerator {
   /** 画布ID */
   id?: string;
   /** 文字 */
@@ -24,7 +24,8 @@ class GridTextGenerator {
   textOccupiedGridCount = 0;
 
   /** 配置项 */
-  config?: InitConfig;
+  private config?: InitConfig;
+
   private initCanvas() {
     const canvas = document.getElementById(this.id!) as HTMLCanvasElement;
     const rect = canvas.parentElement!.getBoundingClientRect();
@@ -226,9 +227,6 @@ class GridTextGenerator {
     _File_Download({ href, fileName: `网格文字 ${this.text}` });
   }
 }
-
-const gridTextGenerator = new GridTextGenerator();
-export default gridTextGenerator;
 
 export const FontFamilyOptions = [
   { label: "衬线字体", value: "serif" },

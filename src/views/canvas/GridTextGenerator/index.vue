@@ -6,7 +6,7 @@ import {
   _Utility_Throttle,
 } from "nhanh-pure-function";
 import ResponsiveDirectionLayout from "@/components/layout/ResponsiveDirectionLayout.vue";
-import gridTextGenerator, { FontFamilyOptions } from ".";
+import { FontFamilyOptions, GridTextGenerator } from ".";
 import {
   NButton,
   NCard,
@@ -28,6 +28,8 @@ import ImageViewerHelp from "./imageViewerHelp.vue";
 const fontFamilyOptions = ref([...FontFamilyOptions]);
 
 const id = _Utility_GenerateUUID();
+
+const gridTextGenerator = new GridTextGenerator();
 gridTextGenerator.id = id;
 
 const textOccupiedGridCount = ref(0);
@@ -61,7 +63,7 @@ watch(
 
     generator();
   },
-  { immediate: true, deep: true },
+  { immediate: true, deep: true }
 );
 
 /** 下载 ‘图片查看器.exe’ */
