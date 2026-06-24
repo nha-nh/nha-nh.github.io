@@ -63,16 +63,22 @@ watch(
 
     generator();
   },
-  { immediate: true, deep: true }
+  { immediate: true, deep: true },
 );
 
 /** 下载 ‘图片查看器.exe’ */
 function downloadImageViewer() {
-  _File_Download({ href: "/public/script/nhanh的图片查看器.exe" });
+  _File_Download({
+    href: "/public/script/ImageViewer.exe",
+    fileName: "图片查看器.exe",
+  });
 }
 /** 下载 ‘COC城墙拖放工具.exe’ */
 function downloadCOCWallDragAndDropTool() {
-  _File_Download({ href: "/public/script/COC城墙拖放工具.exe" });
+  _File_Download({
+    href: "/public/script/COCCityWallDragTool.exe",
+    fileName: "COC城墙拖放工具.exe",
+  });
 }
 </script>
 
