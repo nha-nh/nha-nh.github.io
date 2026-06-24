@@ -69,14 +69,14 @@ watch(
 /** 下载 ‘图片查看器.exe’ */
 function downloadImageViewer() {
   _File_Download({
-    href: "/public/script/ImageViewer.exe",
+    href: "https://github.com/nha-nh/nha-nh.github.io/releases/latest/download/ImageViewer.exe",
     fileName: "图片查看器.exe",
   });
 }
 /** 下载 ‘COC城墙拖放工具.exe’ */
 function downloadCOCWallDragAndDropTool() {
   _File_Download({
-    href: "/public/script/COCCityWallDragTool.exe",
+    href: "https://github.com/nha-nh/nha-nh.github.io/releases/latest/download/COCCityWallDragTool.exe",
     fileName: "COC城墙拖放工具.exe",
   });
 }
