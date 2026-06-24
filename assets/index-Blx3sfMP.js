@@ -1,0 +1,1 @@
+import{d as o,am as t,c as n,o as c,e as a,U as d,u as r,_}from"./index-BTERG2n5.js";const i=["id"],p=o({__name:"index",setup(l){const s=t("webgl-");return(m,e)=>(c(),n("canvas",{id:r(s)},[...e[0]||(e[0]=[a(" 你的浏览器似乎不支持或者禁用了 HTML5 ",-1),d("code",null,"<canvas>",-1),a(" 元素。 ",-1)])],8,i))}}),f=_(p,[["__scopeId","data-v-ae29ba78"]]);export{f as default};
