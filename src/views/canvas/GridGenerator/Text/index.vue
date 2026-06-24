@@ -70,6 +70,10 @@ watch(
 function downloadImageViewer() {
   _File_Download({ href: "/public/script/nhanh的图片查看器.exe" });
 }
+/** 下载 ‘COC城墙拖放工具.exe’ */
+function downloadCOCWallDragAndDropTool() {
+  _File_Download({ href: "/public/script/COC城墙拖放工具.exe" });
+}
 </script>
 
 <template>
@@ -78,7 +82,9 @@ function downloadImageViewer() {
       <NScrollbar style="max-height: 100%">
         <div class="config-panel">
           <NCard title="文本占用网格计数" size="small">
-            <NInput :value="textOccupiedGridCount + ''" />
+            <template #header-extra>
+              <NInput :value="textOccupiedGridCount + ''" />
+            </template>
           </NCard>
 
           <NCard title="文字样式" size="small">
@@ -161,7 +167,7 @@ function downloadImageViewer() {
             </div>
           </NCard>
 
-          <NCard title="其他" size="small">
+          <NCard size="small">
             <div class="button-panel">
               <NButton
                 type="success"
@@ -183,6 +189,17 @@ function downloadImageViewer() {
                 </NButton>
                 <ImageViewerHelp />
               </NInputGroup>
+
+              <NButton
+                type="warning"
+                ghost
+                @click="downloadCOCWallDragAndDropTool"
+              >
+                <template #icon>
+                  <NIcon :component="CloudDownloadOutline" />
+                </template>
+                COC城墙拖放工具.exe
+              </NButton>
             </div>
           </NCard>
         </div>

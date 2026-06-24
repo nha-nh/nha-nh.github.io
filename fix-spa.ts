@@ -29,9 +29,9 @@ const routes = [
     "将图片打散为网格块并动态重组，支持动画与抛掷效果的可视化。/Scatter an image into blocks and recombine with animations and throws.",
   ],
   [
-    "网格文字生成/Grid Text Generator",
-    "/canvas/GridTextGenerator",
-    "将文本映射到网格生成像素化文字效果，支持导出与样式调整。/Generate pixelated text on grids with export and styling options.",
+    "网格图像生成/Grid Image Generator",
+    "/canvas/GridGenerator",
+    "将图片映射到网格生成像素化图片效果，支持导出与样式调整。/Generate pixelated images on grids with export and styling options.",
   ],
   [
     "Bézier 曲线/Bézier Curve",
@@ -148,12 +148,12 @@ export default {
       // 替换 title 内容
       let updatedContent = originalIndexContent.replace(
         /<title>你好啊你好<\/title>/,
-        `<title>${routeName}</title>`,
+        `<title>${routeName}</title>`
       );
       if (details) {
         updatedContent = updatedContent.replace(
           /<h1 class="seo-h1">你好啊你好<\/h1>/,
-          `<h1 class="seo-h1">${details}</h1>`,
+          `<h1 class="seo-h1">${details}</h1>`
         );
       }
 
@@ -170,7 +170,7 @@ export default {
     fs.writeFileSync(
       path.join(distPath, "sitemap.txt"),
       sitemapContent,
-      "utf8",
+      "utf8"
     );
 
     const sitemapXmlContent = `<?xml version="1.0" encoding="UTF-8"?>
@@ -193,7 +193,7 @@ export default {
     fs.writeFileSync(
       path.join(distPath, "sitemap.xml"),
       sitemapXmlContent,
-      "utf8",
+      "utf8"
     );
     console.log("SPA 路由修复完成，已生成各路由 index.html 和 sitemap.txt");
   },

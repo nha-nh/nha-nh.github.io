@@ -80,7 +80,8 @@ function togglePlayback() {
   }
 }
 
-window.addEventListener("click", togglePlayback, { once: true });
+if (import.meta.env.PROD)
+  window.addEventListener("click", togglePlayback, { once: true });
 </script>
 
 <template>

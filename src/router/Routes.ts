@@ -125,19 +125,19 @@ const canvas: CustomRouteRecord = {
       component: () => import("@/views/canvas/ImageScatterRecombine/index.vue"),
     },
     {
-      path: "GridTextGenerator",
-      name: "GridTextGenerator",
+      path: "GridGenerator",
+      name: "GridGenerator",
       meta: {
         name: {
-          zhCN: "网格文字生成",
-          enUS: "Grid Text Generator",
+          zhCN: "网格图片生成",
+          enUS: "Grid Image Generator",
         },
         details: {
-          zhCN: "将文本映射到网格生成像素化文字效果，支持导出与样式调整。",
-          enUS: "Generate pixelated text on grids with export and styling options.",
+          zhCN: "将图片映射到网格生成像素化图片效果，支持导出与样式调整。",
+          enUS: "Generate pixelated images on grids with export and styling options.",
         },
       },
-      component: () => import("@/views/canvas/GridTextGenerator/index.vue"),
+      component: () => import("@/views/canvas/GridGenerator/index.vue"),
     },
     {
       path: "BezierCurve",

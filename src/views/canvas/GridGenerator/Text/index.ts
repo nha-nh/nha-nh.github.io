@@ -44,7 +44,7 @@ export class GridTextGenerator {
     canvas.width = width;
     canvas.height = height;
 
-    const ctx = canvas.getContext("2d")!;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
     ctx.clearRect(0, 0, width, height);
 
     return {
@@ -53,13 +53,28 @@ export class GridTextGenerator {
       gridSize,
     };
   }
-  private renderGird(config: InitConfig) {
+  /** 绘制棋盘格背景（双色交替网格） */
+  private renderGrid(config: InitConfig): void {
     const { ctx, gridSize } = config;
-    const color = ["#F0F0F0", "#FFFFFF"];
+
+    const baseColor = "#F0F0F0";
+    const alternateColor = "#FFFFFF";
+    const totalSize = this.gridCount * gridSize;
+
+    // 1. 先将整个网格区域整体填充为底色
+    ctx.fillStyle = baseColor;
+    ctx.fillRect(0, 0, totalSize, totalSize);
+
+    // 2. 更改填充颜色，准备绘制交替的格子
+    ctx.fillStyle = alternateColor;
+
+    // 3. 仅循环渲染需要交替颜色的格子
     for (let r = 0; r < this.gridCount; r++) {
       for (let c = 0; c < this.gridCount; c++) {
-        ctx.fillStyle = color[(r + c) % 2];
-        ctx.fillRect(c * gridSize, r * gridSize, gridSize, gridSize);
+        // 当行索引与列索引之和为奇数时，填充交替色
+        if ((r + c) % 2 === 1) {
+          ctx.fillRect(c * gridSize, r * gridSize, gridSize, gridSize);
+        }
       }
     }
   }
@@ -102,7 +117,7 @@ export class GridTextGenerator {
 
     const imageData = ctx.getImageData(0, 0, size, size);
     const newImageData = new ImageData(size, size);
-    const getGirdColor = (row: number, col: number) => {
+    const getGridColor = (row: number, col: number) => {
       const colors: number[] = [];
 
       const startRow = row * gridSize;
@@ -123,7 +138,7 @@ export class GridTextGenerator {
       }
       return colors;
     };
-    const setGirdColor = (row: number, col: number, colors: number[]) => {
+    const setGridColor = (row: number, col: number, colors: number[]) => {
       let colorIndex = 0;
 
       const startRow = row * gridSize;
@@ -186,9 +201,9 @@ export class GridTextGenerator {
 
     for (let r = 0; r < this.gridCount; r++) {
       for (let c = 0; c < this.gridCount; c++) {
-        const gridColor = getGirdColor(r, c);
+        const gridColor = getGridColor(r, c);
         const targetColor = getTargetColor(gridColor);
-        setGirdColor(r, c, targetColor);
+        setGridColor(r, c, targetColor);
       }
     }
 
@@ -201,7 +216,7 @@ export class GridTextGenerator {
     this.config = this.initCanvas();
     if (!this.config) return;
 
-    this.renderGird(this.config);
+    this.renderGrid(this.config);
     this.renderText(this.config);
 
     if (this.uniformization) this.gridColorUniformization(this.config);
