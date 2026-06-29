@@ -40,7 +40,7 @@ const config = ref({
   isDragInverted: false,
 
   enableKaleidoscope: false,
-  kaleidoscopeSides: 2,
+  kaleidoscopeMirrors: 2,
 });
 
 const render = _Utility_Debounce(() => {
@@ -80,26 +80,26 @@ onMounted(() => {
     <template #left>
       <NScrollbar style="max-height: 100%">
         <div class="config-panel">
-          <NCard title="占用网格计数" size="small">
-            <template #header-extra>
-              <NInputNumber
-                :value="textOccupiedGridCount"
-                :show-button="false"
-                readonly
-              />
-            </template>
+          <NCard title="网格" size="small">
+            <div class="config-panel">
+              <NInputGroup>
+                <NInputGroupLabel>占用计数</NInputGroupLabel>
+                <NInputNumber
+                  :value="textOccupiedGridCount"
+                  :show-button="false"
+                  readonly
+                />
+              </NInputGroup>
 
-            <NSpace :size="20">
-              <NH5 prefix="bar" style="margin: 0">
-                <NText code> CTRL + Z </NText>
-                <NText type="success"> 撤销 </NText>
-              </NH5>
-
-              <NH5 prefix="bar" style="margin: 0">
-                <NText code> CTRL + Y </NText>
-                <NText type="success"> 重做 </NText>
-              </NH5>
-            </NSpace>
+              <NInputGroup>
+                <NInputGroupLabel>行列数量</NInputGroupLabel>
+                <NInputNumber
+                  v-model:value="config.gridCount"
+                  :min="1"
+                  :precision="0"
+                />
+              </NInputGroup>
+            </div>
           </NCard>
 
           <NCard title="图像融合" size="small">
@@ -188,29 +188,32 @@ onMounted(() => {
             </div>
           </NCard>
 
-          <NCard title="网格" size="small">
+          <NCard title="拖拽绘制" size="small">
             <div class="config-panel">
-              <NInputGroup>
-                <NInputGroupLabel>网格行列数量</NInputGroupLabel>
-                <NInputNumber
-                  v-model:value="config.gridCount"
-                  :min="1"
-                  :precision="0"
-                />
-              </NInputGroup>
+              <NSpace :size="20">
+                <NH5 prefix="bar" style="margin: 0">
+                  <NText code> CTRL + Z </NText>
+                  <NText type="success"> 撤销 </NText>
+                </NH5>
+
+                <NH5 prefix="bar" style="margin: 0">
+                  <NText code> CTRL + Y </NText>
+                  <NText type="success"> 重做 </NText>
+                </NH5>
+              </NSpace>
 
               <NInputGroup>
-                <NInputGroupLabel>拖拽效果取反</NInputGroupLabel>
+                <NInputGroupLabel>效果取反</NInputGroupLabel>
                 <NSwitch v-model:value="config.isDragInverted" />
               </NInputGroup>
 
               <NInputGroup>
-                <NInputGroupLabel>拖拽&nbsp;万花筒</NInputGroupLabel>
+                <NInputGroupLabel>万花筒&nbsp;</NInputGroupLabel>
                 <NSwitch v-model:value="config.enableKaleidoscope" />
-                <NInputGroupLabel>边数</NInputGroupLabel>
+                <NInputGroupLabel>镜面数量</NInputGroupLabel>
                 <NInputNumber
-                  v-model:value="config.kaleidoscopeSides"
-                  :min="2"
+                  v-model:value="config.kaleidoscopeMirrors"
+                  :min="1"
                   :precision="0"
                 />
               </NInputGroup>

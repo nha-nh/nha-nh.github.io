@@ -94,8 +94,8 @@ class Base {
 
   /** 万花筒模式 */
   enableKaleidoscope = false;
-  /** 万花筒边数 */
-  kaleidoscopeSides = 2;
+  /** 万花筒镜面数量 */
+  kaleidoscopeMirrors = 2;
   /**
    * 获取所有相关子网格（万花筒模式返回对称网格数组）
    * @param x 像素坐标 x
@@ -119,7 +119,7 @@ class Base {
     const baseAngle = Math.atan2(dr, dc); // 注意：这里用 dc 对应 x 方向，dr 对应 y 方向
     const dist = Math.sqrt(dr * dr + dc * dc);
 
-    const sides = this.kaleidoscopeSides;
+    const sides = this.kaleidoscopeMirrors;
     const angleStep = (2 * Math.PI) / sides;
 
     // 将基础角度映射到 [0, angleStep) 的基本扇区内
@@ -213,6 +213,8 @@ class Base {
   /** 移动事件 */
   private handleMouseMove = (ev: MouseEvent) => {
     if (!this.isPointerDown || this.disabled) return;
+
+    if (!ev.movementX && !ev.movementY) return;
 
     // 一旦在按下状态下触发了移动，就标记为正在拖拽
     this.isDragging = true;
