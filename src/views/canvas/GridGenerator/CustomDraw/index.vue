@@ -2,7 +2,9 @@
 import ResponsiveDirectionLayout from "@/components/layout/ResponsiveDirectionLayout.vue";
 import {
   NButton,
+  NButtonGroup,
   NCard,
+  NCheckbox,
   NCollapseTransition,
   NH5,
   NIcon,
@@ -26,6 +28,7 @@ import { ArchiveOutline, CloudDownloadOutline } from "@vicons/ionicons5";
 const id = _Utility_GenerateUUID("canvas-");
 const customDraw = new CustomDraw();
 
+const tilt45Degree = ref(false);
 const textOccupiedGridCount = ref(0);
 const enableMerge = ref(false);
 const config = ref({
@@ -35,6 +38,9 @@ const config = ref({
   targetColor: "#000",
   scale: 0.5,
   isDragInverted: false,
+
+  enableKaleidoscope: false,
+  kaleidoscopeSides: 2,
 });
 
 const render = _Utility_Debounce(() => {
@@ -49,12 +55,14 @@ function loadImage(fileList: UploadFileInfo[]) {
   if (!file) return;
   customDraw.loadImage(file, () => (enableMerge.value = false));
   enableMerge.value = true;
+  tilt45Degree.value = true;
 }
 function confirmMerge() {
   customDraw.confirmMerge();
-  config.value.colorThresholdRatio = customDraw.colorThresholdRatio;
-  config.value.uniformization = customDraw.uniformization;
-  config.value.scale = customDraw.scale;
+  Object.keys(config.value).forEach((key) => {
+    /** @ts-ignore */
+    config.value[key] = customDraw[key];
+  });
   enableMerge.value = false;
 }
 
@@ -154,14 +162,27 @@ onMounted(() => {
                     <NSwitch v-model:value="config.uniformization" />
                   </NInputGroup>
 
-                  <NButton
-                    strong
-                    secondary
-                    type="success"
-                    @click="confirmMerge"
-                  >
-                    确认融合
-                  </NButton>
+                  <NButtonGroup>
+                    <NButton
+                      strong
+                      secondary
+                      type="error"
+                      @click="
+                        customDraw.clearImage();
+                        enableMerge = false;
+                      "
+                    >
+                      清除图像
+                    </NButton>
+                    <NButton
+                      strong
+                      secondary
+                      type="success"
+                      @click="confirmMerge"
+                    >
+                      确认融合
+                    </NButton>
+                  </NButtonGroup>
                 </div>
               </NCollapseTransition>
             </div>
@@ -175,13 +196,23 @@ onMounted(() => {
                   v-model:value="config.gridCount"
                   :min="1"
                   :precision="0"
-                  @update:value="render"
                 />
               </NInputGroup>
 
               <NInputGroup>
                 <NInputGroupLabel>拖拽效果取反</NInputGroupLabel>
                 <NSwitch v-model:value="config.isDragInverted" />
+              </NInputGroup>
+
+              <NInputGroup>
+                <NInputGroupLabel>拖拽&nbsp;万花筒</NInputGroupLabel>
+                <NSwitch v-model:value="config.enableKaleidoscope" />
+                <NInputGroupLabel>边数</NInputGroupLabel>
+                <NInputNumber
+                  v-model:value="config.kaleidoscopeSides"
+                  :min="2"
+                  :precision="0"
+                />
               </NInputGroup>
 
               <NButton
@@ -210,7 +241,12 @@ onMounted(() => {
     </template>
     <template #right>
       <div class="canvas-container">
-        <canvas :id="id" />
+        <NCheckbox
+          v-model:checked="tilt45Degree"
+          label="倾斜45°"
+          :disabled="enableMerge"
+        />
+        <canvas :id="id" :class="{ 'tilt-45-degree': tilt45Degree }" />
       </div>
     </template>
   </ResponsiveDirectionLayout>
@@ -221,6 +257,12 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  .n-button-group {
+    width: 100%;
+    .n-button {
+      width: 50%;
+    }
+  }
   .n-input-group {
     align-items: center;
   }
@@ -232,6 +274,9 @@ onMounted(() => {
   .n-slider,
   .n-switch {
     margin-left: 10px !important;
+    &:not(:last-child) {
+      margin-right: 10px !important;
+    }
   }
 }
 .input-color-label {
@@ -256,10 +301,20 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
   canvas {
     width: 100%;
     height: 100%;
+    transform: rotate(0deg);
+    transition: transform 0.2s ease-in-out;
+  }
+  .tilt-45-degree {
     transform: rotate(45deg);
+  }
+  .n-checkbox {
+    position: absolute;
+    top: 10px;
+    left: 10px;
   }
 }
 </style>

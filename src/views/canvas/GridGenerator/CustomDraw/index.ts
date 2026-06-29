@@ -92,11 +92,69 @@ class Base {
     this.render();
   }
 
-  /** 获取子网格 */
-  private getSubGrid(x: number, y: number) {
-    const row = Math.floor(y / this.gridSize);
-    const col = Math.floor(x / this.gridSize);
-    return { row, col };
+  /** 万花筒模式 */
+  enableKaleidoscope = false;
+  /** 万花筒边数 */
+  kaleidoscopeSides = 2;
+  /**
+   * 获取所有相关子网格（万花筒模式返回对称网格数组）
+   * @param x 像素坐标 x
+   * @param y 像素坐标 y
+   * @returns 去重后的网格坐标数组 [{row, col}, ...]
+   */
+  private getSubGrid(x: number, y: number): { row: number; col: number }[] {
+    const baseRow = Math.floor(y / this.gridSize);
+    const baseCol = Math.floor(x / this.gridSize);
+
+    // 未启用万花筒，直接返回基础网格
+    if (!this.enableKaleidoscope) {
+      return [{ row: baseRow, col: baseCol }];
+    }
+
+    const gridCount = this.gridCount; // 之前代码中存在的属性
+    const centerRow = (gridCount - 1) / 2; // 中心网格行（可能为小数，用于向量计算）
+    const centerCol = (gridCount - 1) / 2; // 中心网格列
+    const dr = baseRow - centerRow;
+    const dc = baseCol - centerCol;
+    const baseAngle = Math.atan2(dr, dc); // 注意：这里用 dc 对应 x 方向，dr 对应 y 方向
+    const dist = Math.sqrt(dr * dr + dc * dc);
+
+    const sides = this.kaleidoscopeSides;
+    const angleStep = (2 * Math.PI) / sides;
+
+    // 将基础角度映射到 [0, angleStep) 的基本扇区内
+    let primaryAngle = baseAngle % angleStep;
+    if (primaryAngle < 0) primaryAngle += angleStep;
+
+    const gridSet = new Set<string>(); // 用字符串去重 "row,col"
+
+    for (let i = 0; i < sides; i++) {
+      // 每个扇区产生两种镜像角度：正向和反向
+      const angle1 = i * angleStep + primaryAngle;
+      const angle2 = (i + 1) * angleStep - primaryAngle;
+
+      for (const angle of [angle1, angle2]) {
+        // 通过角度和距离还原向量
+        const newDr = Math.sin(angle) * dist;
+        const newDc = Math.cos(angle) * dist;
+
+        // 四舍五入到最近的网格坐标
+        const newRow = Math.round(centerRow + newDr);
+        const newCol = Math.round(centerCol + newDc);
+
+        // 限制在有效网格范围内
+        const clampedRow = Math.max(0, Math.min(gridCount - 1, newRow));
+        const clampedCol = Math.max(0, Math.min(gridCount - 1, newCol));
+
+        gridSet.add(`${clampedRow},${clampedCol}`);
+      }
+    }
+
+    // 还原为对象数组
+    return Array.from(gridSet).map((key) => {
+      const [r, c] = key.split(",").map(Number);
+      return { row: r, col: c };
+    });
   }
   /** 添加已填充网格 */
   protected addFilledGrid(row: number, col: number) {
@@ -133,8 +191,10 @@ class Base {
     if (this.isDragging || this.disabled) return;
 
     const { offsetX, offsetY } = ev;
-    const subGrid = this.getSubGrid(offsetX, offsetY);
-    this.toggleFilledGrid(subGrid.row, subGrid.col);
+    const subGrids = this.getSubGrid(offsetX, offsetY);
+    subGrids.forEach((subGrid) =>
+      this.toggleFilledGrid(subGrid.row, subGrid.col)
+    );
     this.undoRedoHistory.push(this.filledGrids);
     this.render();
   };
@@ -158,10 +218,13 @@ class Base {
     this.isDragging = true;
 
     const { offsetX, offsetY } = ev;
-    const subGrid = this.getSubGrid(offsetX, offsetY);
+    const subGrids = this.getSubGrid(offsetX, offsetY);
 
-    if (this.isDragInverted) this.removeFilledGrid(subGrid.row, subGrid.col);
-    else this.addFilledGrid(subGrid.row, subGrid.col);
+    subGrids.forEach((subGrid) => {
+      if (this.isDragInverted) this.removeFilledGrid(subGrid.row, subGrid.col);
+      else this.addFilledGrid(subGrid.row, subGrid.col);
+    });
+
     this.render();
   };
 
@@ -313,6 +376,7 @@ export default class MergeImage extends Base {
     if (!this.isPointerDown || !this.disabled) return;
     this.isDragging = true;
     const { movementX, movementY } = ev;
+
     this.offset.x += movementX;
     this.offset.y += movementY;
     this.render();
@@ -337,13 +401,14 @@ export default class MergeImage extends Base {
     this.disabled = true;
   }
   /** 清除图像 */
-  private clearImage() {
+  clearImage() {
     this.images = undefined;
     this.uniformization = false;
     this.disabled = false;
     this.scale = 0.5;
     this.offset = { x: 0, y: 0 };
     this.imageFilledGrids.clear();
+    this.render();
   }
   /** 确认融合 */
   confirmMerge() {
@@ -358,7 +423,6 @@ export default class MergeImage extends Base {
     this.undoRedoHistory.push(this.filledGrids);
 
     this.clearImage();
-    this.render();
   }
 
   /** 渲染图像 */
@@ -404,7 +468,8 @@ export default class MergeImage extends Base {
 
     // 容差平方
     const tolerance = 20;
-    const color = _Utility_ColorConverter.toRgba(this.targetColor);
+    const color = _Utility_ColorConverter.toRgbaObject(this.targetColor);
+    color.a *= 255;
 
     // 2. 创建一个一维计数数组，大小为网格总数 (gridCount * gridCount)
     // 使用 Uint32Array 性能最好，占用内存极小
@@ -412,14 +477,17 @@ export default class MergeImage extends Base {
 
     // 3. 核心优化：只遍历一次像素数据 (线性 O(N) 扫描)
     // 每个像素占用 4 个位置，所以步长为 4
+    const pixelColor = { r: 0, g: 0, b: 0, a: 0 };
     const len = data.length;
     for (let i = 0; i < len; i += 4) {
-      const xx = `rgba(${data[i]}, ${data[i + 1]}, ${data[i + 2]}, ${
-        data[i + 3]
-      })`;
+      pixelColor.r = data[i];
+      pixelColor.g = data[i + 1];
+      pixelColor.b = data[i + 2];
+      pixelColor.a = data[i + 3];
+
       const isWithin = _Utility_ColorConverter.isWithinColorDifference(
         color,
-        xx,
+        pixelColor,
         tolerance
       );
 
