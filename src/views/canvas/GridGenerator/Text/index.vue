@@ -63,11 +63,14 @@ watch(
 
     generator();
   },
-  { immediate: true, deep: true },
+  { immediate: true, deep: true }
 );
 
-function openLatestRelease() {
-  window.open("https://github.com/nha-nh/nha-nh.github.io/releases", "_blank");
+function openImageViewer() {
+  window.open("https://github.com/nha-nh/AHK-Scripts/releases", "_blank");
+}
+function openCOCWallTool() {
+  window.open("https://github.com/nha-nh/coc-wall-tool/releases", "_blank");
 }
 </script>
 
@@ -176,14 +179,20 @@ function openLatestRelease() {
               </NButton>
 
               <NInputGroup>
-                <NButton type="info" ghost @click="openLatestRelease">
+                <NButton type="info" ghost @click="openImageViewer">
                   <template #icon>
                     <NIcon :component="CloudDownloadOutline" />
                   </template>
-                  图片查看器.exe / COC城墙拖放工具.exe
+                  图片查看器.exe
                 </NButton>
                 <ImageViewerHelp />
               </NInputGroup>
+              <NButton type="warning" ghost @click="openCOCWallTool">
+                <template #icon>
+                  <NIcon :component="CloudDownloadOutline" />
+                </template>
+                COC城墙拖放工具.exe
+              </NButton>
             </div>
           </NCard>
         </div>

@@ -12,7 +12,7 @@ const active = ref(false);
     <template #icon>
       <NIcon :component="HelpCircleOutline" />
     </template>
-    图片查看器说明
+    说明
   </NButton>
 
   <NModal
